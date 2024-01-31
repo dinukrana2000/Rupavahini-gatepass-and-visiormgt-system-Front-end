@@ -8,6 +8,7 @@ import BasicTimePicker from '../../Components/timepicker/timepicker';
 import Drawer from '../../Components/Drawer/Drawer';
 import Box from '@mui/system/Box';
 import axios, { Axios } from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const StyledContainer = styled(Container)({
   height: '110vh',
@@ -49,6 +50,7 @@ const useStyles = {
 };
 
 function Visit1() {
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [formData, setFormData] = useState({
     requesterName : '',

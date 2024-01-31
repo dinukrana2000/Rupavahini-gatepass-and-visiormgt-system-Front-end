@@ -3,11 +3,25 @@ import './login.css'
 import { IconButton, InputAdornment, TextField } from '@mui/material';
 import axios from 'axios'
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-
+import { Link } from 'react-router-dom';
 import im3 from '../../Assets/im3.jpg';
 import MuiButton from '../../Components/Button/MuiButton';
+import { useNavigate } from 'react-router-dom';
 
 function User_login() {
+  const navigate = useNavigate();
+
+  const hancleRegisterClick = () => {
+
+   
+    navigate('/usersignup');
+  };
+  const hanclefogotClick = () => {
+
+    navigate('/forgot');
+  }
+
+ 
   const [open, setOpen] = useState(false);
   const [formData, setFormData] = useState({
       username: '',
@@ -54,13 +68,14 @@ function User_login() {
       } else {
         handleOpen();
       }
+
+      console.log('Form submited!', formData);
+      const response =  axios.post(`http://localhost:4000/LoginUser`,formData );
+      handleClose();
+      navigate('/userreq');
   };
 
-  const handleConfirmSubmit = () => {
-    console.log('Form submited!', formData);
-    const response =  axios.post`(http://localhost:4000/api/reservation/filter,formData )`;
-    handleClose();
-};
+  
 
   const handleInputChange = (e) => {
       const {name, value} = e.target;
@@ -130,13 +145,19 @@ function User_login() {
       />
 
             <div className='forgot'>
-                <a href='/Forgot'>Forgot Password?</a> 
+            <button  style={{background: 'none',color: 'blue',
+      border: 'none',
+      padding: 0,
+      margin: 0,}} onClick={hanclefogotClick}>Forgot Password</button>
             </div>
 
             <MuiButton label='Login' onClick={handleSubmit}/>
                        
             <div className='register'>
-                <p>Don't have an account? <a href='#'>Register</a></p>
+                <p >Don't have an account? <button  style={{background: 'none',color: 'blue',
+      border: 'none',
+      padding: 0,
+      margin: 0,}} onClick={hancleRegisterClick}>Register</button> </p>
             </div>
             
         </form>

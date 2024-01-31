@@ -5,7 +5,9 @@ import Alert from "../../Components/Alert/Alert";
 import Drawer from "../../Components/Drawer/Drawer"; 
 import axios from "axios";
 
+
 const Request = () => {
+ 
  
   const [visitRequests, setVisitRequests] = useState([]);
   const [appoinmentRequests, setAppoinmentRequests] = useState([]);
@@ -53,6 +55,7 @@ useEffect(()=>async()=>{
 
   return (
     <>
+    <div className="bod">
     <Drawer/> 
     <div>
       <div className="blur-image">
@@ -87,7 +90,7 @@ useEffect(()=>async()=>{
         </div>
       ))} 
       </div>
-      </div>
+      </div></div>
       </>
   );
 };

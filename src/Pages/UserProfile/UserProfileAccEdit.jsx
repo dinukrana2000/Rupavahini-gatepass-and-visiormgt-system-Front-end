@@ -17,9 +17,15 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Cancel';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+
 
 
 function UserProfileAccEdit({ user }) {
+  
+  const navigate = useNavigate();
+
+
   const [editing, setEditing] = useState(true);
   const [editedUser, setEditedUser] = useState({
     fullName: user.fullName,
@@ -40,15 +46,17 @@ function UserProfileAccEdit({ user }) {
   };
 
   const handleEditProfile = () => {
-    console.log('Edit Profile clicked');
+   
     handleMenuClose();
+    navigate('/useraccedit');
     // Add logic for handling Edit Profile
   };
 
 
   const handleChangePassword = () => {
-    console.log('Change Password clicked');
+  
     handleMenuClose();
+    navigate('/useraccpwd');
     // Add logic for handling Change Password
   };
 

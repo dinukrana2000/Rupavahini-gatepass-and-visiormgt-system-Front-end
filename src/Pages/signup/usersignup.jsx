@@ -4,9 +4,11 @@ import { styled } from '@mui/system';
 import RightSideImage from '../../Assets/signupimage/rafiki.png';
 import MuiButton from '../../Components/Button/MuiButton';
 import ConfirmSubmission from '../../Components/confirmsubmission/submitconfirm';
-import Drawer from '../../Components/Drawer/Drawer';
+
 import Box from '@mui/system/Box';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+
 
 const StyledContainer = styled(Container)({
   minHeight: '110vh',
@@ -47,6 +49,15 @@ const useStyles = {
 };
 
 function User() {
+  const navigate = useNavigate();
+
+  const hanclesignupClick = () => {
+    console.log('Form submitted!', formData);
+    const response =  axios.post(`http://localhost:4000/userRegister`,formData );
+    handleClose();
+   
+    navigate('/userlogin');
+  };
   const [open, setOpen] = useState(false);
   const [formData, setFormData] = useState({
     username: '',
@@ -113,11 +124,6 @@ function User() {
     }
   };
 
-  const handleConfirmSubmit = () => {
-    console.log('Form submitted!', formData);
-    const response =  axios.post(`http://localhost:4000/api/reservation/filter`,formData );
-    handleClose();
-  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -138,7 +144,7 @@ function User() {
 
   return (
     <Box>
-      <Drawer/>
+     
     
     <div style={useStyles.bg}>
     <Grid container sx={{width: '100%'}}>
@@ -242,7 +248,7 @@ function User() {
               </Grid>
 
               {/* Confirmation Dialog */}
-              <ConfirmSubmission open={open} handleClose={handleClose} handleConfirmSubmit={handleConfirmSubmit} />
+              <ConfirmSubmission open={open} handleClose={handleClose} handleConfirmSubmit={hanclesignupClick} />
             </form>
           </StyledPaper>
         </StyledContainer>

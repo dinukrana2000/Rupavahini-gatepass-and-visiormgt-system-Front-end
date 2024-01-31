@@ -11,10 +11,16 @@ import {
 } from '@mui/material';
 import Drawer from '../../Components/Drawer/Drawer';
 import SettingsIcon from '@mui/icons-material/Settings';
+import { useNavigate } from 'react-router-dom';
 //import axios from 'axios';
+
+
 
 function UserProfileAcc({ user }) {
   const [anchorEl, setAnchorEl] = useState(null);
+  const navigate = useNavigate();
+
+ 
   //const [user, setUser] = useState(null);
   /*useEffect(() => {
     const fetchUserData = async () => {
@@ -29,6 +35,7 @@ function UserProfileAcc({ user }) {
     fetchUserData();
   }, []);   use when get data from back end*/
 
+  
 
   const handleSettingsClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -39,14 +46,16 @@ function UserProfileAcc({ user }) {
   };
 
   const handleEditProfile = () => {
-    console.log('Edit Profile clicked');
     handleMenuClose();
+    navigate('/useraccedit');
+   
     // Add logic for handling Edit Profile
   };
 
   const handleChangePassword = () => {
-    console.log('Change Password clicked');
+    
     handleMenuClose();
+    navigate('/useraccpwd');
     // Add logic for handling Change Password
   };
 

@@ -24,7 +24,7 @@ import Menu from '@mui/material/Menu';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
-import { useNavigate } from 'react-router-dom';
+
 
 const drawerWidth = 240;
 
@@ -122,32 +122,6 @@ const ResponsiveMenuItem = styled(MenuItem)(({ theme }) => ({
 }));
 
 export default function ResponsiveDrawer({children}) {
-
-  const navigate = useNavigate();
-
-  const handleAccountclick = () => {
-
-    navigate('/useracc');
-  };
-
-
-  const handleItemClick = (text) => {
-    console.log(`${text} Clicked`);
-
-    // Add logic here for each item click
-    if (text === "Home") {
-      // Handle Home click
-    } else if (text === "My Request") {
-      navigate('/request');
-    } else if (text === "Log Out") {
-      // Handle Log Out click
-    }
-  };
-
-  
-  const handleDashboardclick = () => {
-    navigate('/userreq');
-  };
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const [hoveredItem, setHoveredItem] = React.useState(null);
@@ -230,9 +204,10 @@ export default function ResponsiveDrawer({children}) {
               }}
             >
               <ResponsiveMenuItem
-                onClick={
-                  handleAccountclick
-                }
+                onClick={() => {
+                  handleMenuClose();
+                  console.log('Account Clicked');
+                }}
                 onMouseEnter={() => handleItemHover('Account')}
                 onMouseLeave={() => handleItemHover(null)}
                 style={{
@@ -246,9 +221,10 @@ export default function ResponsiveDrawer({children}) {
               </ResponsiveMenuItem>
 
               <ResponsiveMenuItem
-                onClick={
-                 handleDashboardclick
-                }
+                onClick={() => {
+                  handleMenuClose();
+                  console.log('Dashboard Clicked');
+                }}
                 onMouseEnter={() => handleItemHover('Dashboard')}
                 onMouseLeave={() => handleItemHover(null)}
                 style={{
@@ -303,27 +279,29 @@ export default function ResponsiveDrawer({children}) {
         </DrawerHeader>
         <Divider />
         <List>
-      {[{ text: 'Home', icon: <HomeIcon />, color: '#973535' },
-        { text: 'My Request', icon: <AssignmentIcon />, color: '#973535' },
-        { text: 'Log Out', icon: <LogoutIcon />, color: '#973535' }].map((item, index) => (
-          <ListItem key={item.text} disablePadding>
-            <ListItemButton
-              onClick={() => handleItemClick(item.text)}
-              onMouseEnter={() => handleItemHover(item.text)}
-              onMouseLeave={() => handleItemHover(null)}
-              sx={{
-                '&:hover': {
-                  color: hoveredItem === item.text ? '#eec01f' : '#973535',
-                },
-                color: hoveredItem === item.text ? '#eec01f' : item.color,
-              }}
-            >
-              <ListItemIcon style={{ color: item.color }}>{item.icon}</ListItemIcon>
-              <ListItemText primary={item.text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-    </List>
+          {[{ text: 'Home', icon: <HomeIcon />, color: '#973535' },
+            { text: 'My Request', icon: <AssignmentIcon />, color: '#973535' },
+            { text: 'Log Out', icon: <LogoutIcon />, color: '#973535' }].map((item, index) => (
+              <ListItem key={item.text} disablePadding>
+                <ListItemButton
+                  onClick={() => {
+                    console.log(`${item.text} Clicked`);
+                  }}
+                  onMouseEnter={() => handleItemHover(item.text)}
+                  onMouseLeave={() => handleItemHover(null)}
+                  sx={{
+                    '&:hover': {
+                      color: hoveredItem === item.text ? '#eec01f' : '#973535',
+                    },
+                    color: hoveredItem === item.text ? '#eec01f' : item.color,
+                  }}
+                >
+                  <ListItemIcon style={{ color: item.color }}>{item.icon}</ListItemIcon>
+                  <ListItemText primary={item.text} />
+                </ListItemButton>
+              </ListItem>
+            ))}
+        </List>
       </Drawer>
       <Main open={open}>
        {children}

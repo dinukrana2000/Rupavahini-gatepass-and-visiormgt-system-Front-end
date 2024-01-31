@@ -1,35 +1,74 @@
 import React from 'react';
-
+import Home from './Pages/Home/Home';
+import User_Login from './Pages/Login/User_login';
+import Staff_Login from './Pages/Login/Staff_Login';
+import Usersignup from './Pages/signup/Usersignup';
+import Staffsignup from './Pages/signup/Staffsignup';
+import UserReq from './Pages/UserRequestHome/UserReq';
+import Dailyactivity from './Pages/Dailyactivity/Dailyactivity';
+import Forgot from './Pages/Password/Forgot_Pwd';
+import Change from './Pages/Password/Change_Pwd'; 
+import UserAcc from './Pages/UserProfile/UserProfileAcc';
+import UserAccEdit from './Pages/UserProfile/UserProfileAccEdit';
+import UserAccPwd from './Pages/UserProfile/UserProfilePwd';
+import Visit1 from './Pages/visit/visit1';
+import Visit2 from './Pages/visit/visit2';
  //import Search from './Pages/Historysearch/staffpagehistory-searchday';
 //import Activity from './Pages/staffpagehistory-activity-view/Activity';
-//import Dailyactivity from './Components/Pages/Dailyactivity/Dailyactivity';
-//import Request from './Pages/Request/Request'; 
 
- //import Home from './Pages/Home/Home';
-//import { BrowserRouter , Route, Routes } from 'react-router-dom';
-//import UserReq from './Pages/UserRequestHome/UserReq';
+import Request from './Pages/Request/Request'; 
+
+ 
+import { BrowserRouter , Route, Routes } from 'react-router-dom';
+
 //import Dumydata from './Pages/UserProfile/Dumydata';
-//import User_Login from './Pages/Login/User_login';
-//import Staff_Login from './Pages/Login/Staff_Login';
-//import Forgot from './Pages/Password/Forgot_Pwd';
-//import Change from './Pages/Password/Change_Pwd'; 
-import StaffComplain from './Pages/staffcomplain/staffcomplain';
+
+
+//import StaffComplain from './Pages/staffcomplain/staffcomplain';
 
 
 function App() {
+  const user = {
+    userName: 'Saman kumara',
+    fullName: 'Saman kumara Ramawikrma',
+    email: 'Saman_kumara@gmail.com',
+    contactNumber: '0713304777',
+  };
+
+  /*const staff = {
+    employeeID: 'EMP001',
+    userName: 'sunil perera',
+    fullName: 'Sunil perera abcd',
+    email: 'sunilpere@gmail.com',
+    contactNumber: '0714859768',
+  };*/
   return (
-
-    /* <Routes>
-      <Route  path="/" element={<Search/>}/>
-      <Route  path="/Search/:id/view" element={<Activity/>}/>
-      </Routes>  */
-
-    /* <div>
-   <Search/>
-   </div>  */
-
     <div className="App">
-    <StaffComplain/>
+    <BrowserRouter>
+    <Routes>
+      <Route path="/" element={<Home/>} />
+      <Route path="/userlogin" element={<User_Login/>} />
+      <Route path="/stafflogin" element={<Staff_Login/>} />
+      <Route path="/usersignup" element={<Usersignup/>} />
+       <Route path="/staffsignup" element={<Staffsignup/>} />
+      <Route path="/userreq" element={<UserReq/>} />
+      <Route path="/dailyactivity" element={<Dailyactivity/>} />
+      <Route path="/forgot" element={<Forgot/>} />
+      <Route path="/change" element={<Change/>} />
+      <Route path="/useracc" element={<UserAcc user={user}/>} />
+      <Route path="/useraccedit" element={<UserAccEdit user={user}/>} />
+      <Route path="/useraccpwd" element={<UserAccPwd user={user}/>} />
+      <Route path="/visit1" element={<Visit1/>} />
+      <Route path="/visit2" element={<Visit2/>} />
+      {/*<Route path="/search" element={<Search/>} />*/}
+      {/*<Route path="/activity" element={<Activity/>} />*/}
+      /*<Route path="/request" element={<Request/>} />*/
+      {/*<Route path="/dumydata" element={<Dumydata/>} />*/}
+      {/*<Route path="/staffcomplain" element={<StaffComplain/>} />*/}
+      
+      </Routes>
+  </BrowserRouter>
+
     </div> 
   );
 }

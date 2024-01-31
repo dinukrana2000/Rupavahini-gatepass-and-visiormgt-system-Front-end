@@ -7,7 +7,13 @@ import MuiButton from '../../Components/Button/MuiButton';
 import im4 from '../../Assets/im4.jpg'
 
 function Forgot_Pwd() {
+
   const navigate = useNavigate();
+
+  const hancleloginbackClick = () => {
+   
+    navigate('/');
+  };
   const [open, setOpen] = useState(false);
   const [formData, setFormData] = useState({
       email: ''
@@ -88,7 +94,10 @@ function Forgot_Pwd() {
             </Grid>
             
             <div className='back'>
-              <a href='/User_Login'>Back to again</a>
+             <button  style={{background: 'none',color: 'blue',
+      border: 'none',
+      padding: 0,
+      margin: 0,}} onClick={hancleloginbackClick}>Back to Log in</button>
             </div>
 
         </form>

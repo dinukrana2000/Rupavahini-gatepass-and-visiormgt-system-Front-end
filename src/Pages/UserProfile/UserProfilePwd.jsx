@@ -20,9 +20,11 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 
 function UserProfileAccEdit({ user }) {
+  const navigate = useNavigate();
   const [editing, setEditing] = useState(true);
   const [editedUser, setEditedUser] = useState({
     userName: user.userName,
@@ -49,15 +51,17 @@ function UserProfileAccEdit({ user }) {
   };
 
   const handleEditProfile = () => {
-    console.log('Edit Profile clicked');
+   
     handleMenuClose();
+    navigate('/useraccedit');
     // Add logic for handling Edit Profile
   };
 
 
   const handleChangePassword = () => {
-    console.log('Change Password clicked');
+  
     handleMenuClose();
+    navigate('/useraccpwd');
     // Add logic for handling Change Password
   };
 

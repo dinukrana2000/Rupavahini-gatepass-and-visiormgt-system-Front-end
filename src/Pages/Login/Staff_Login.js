@@ -6,8 +6,21 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 import im3 from '../../Assets/im3.jpg';
 import MuiButton from '../../Components/Button/MuiButton';
+import { useNavigate } from 'react-router-dom';
 
 function Staff_login() {
+  const navigate = useNavigate();
+
+  const hancleRegister1Click = () => {
+
+   
+    navigate('/staffsignup');
+  };
+
+  const hanclefogotClick= () => {
+      
+      navigate('/forgot');
+  }
   const [open, setOpen] = useState(false);
   const [formData, setFormData] = useState({
       empId: '',
@@ -54,14 +67,14 @@ function Staff_login() {
       } else {
         handleOpen();
       }
+      console.log('Form submited!', formData);
+    const response =  axios.post(`http://localhost:4000/LoginStaff`,formData );
+    handleClose();
+      navigate('/dailyactivity');
+
   };
 
-  const handleConfirmSubmit = () => {
-    console.log('Form submited!', formData);
-    const response =  axios.post`(http://localhost:4000/api/reservation/filter,formData )`;
-    handleClose();
-};
-
+ 
   const handleInputChange = (e) => {
       const {name, value} = e.target;
       setFormData((prevFormData) => ({
@@ -130,13 +143,19 @@ function Staff_login() {
       />
 
             <div className='forgot'>
-                <a href='/Forgot'>Forgot Password?</a> 
+            <button  style={{background: 'none',color: 'blue',
+      border: 'none',
+      padding: 0,
+      margin: 0,}} onClick={hanclefogotClick}>Forgot Password</button>
             </div>
 
             <MuiButton label='Login' onClick={handleSubmit}/>
                        
             <div className='register'>
-                <p>Don't have an account? <a href='#'>Register</a></p>
+                <p>Don't have an account? <button  style={{background: 'none',color: 'blue',
+      border: 'none',
+      padding: 0,
+      margin: 0,}} onClick={hancleRegister1Click}>Register</button></p>
             </div>
             
         </form>

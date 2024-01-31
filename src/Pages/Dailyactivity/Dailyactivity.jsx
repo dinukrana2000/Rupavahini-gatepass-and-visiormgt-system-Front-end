@@ -2,12 +2,14 @@ import React from 'react'
 import './Dailyactivity.css';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
-import BasicTable from '../..//Table/BasicTable';
-import Drawer from "../../Drawer/Drawer";
+import BasicTable from './../../Components/Table/BasicTable';
+import Drawer from "./../../Components/Drawer/Drawer";
 const Dailyactivity = () => {
   return (
-    <><Drawer/>
-         <div className="blur-image">
+    <>
+    <div className="bod">
+    <Drawer/>
+         <div className="blur-image" >
             <Grid container spacing={2} columns={16}>
   <Grid item xs={16} sx={{display:"flex",flexDirection:"column",justifyContent:"",alignItems:"center"}}>
    
@@ -22,7 +24,7 @@ const Dailyactivity = () => {
 </Grid>
 
       
-    </div>
+    </div> </div>
     </>
   )
 }

@@ -6,6 +6,7 @@ import MuiButton from '../../Components/Button/MuiButton';
 import ConfirmSubmission from '../../Components/confirmsubmission/submitconfirm';
 import Box from '@mui/system/Box';
 import axios, { Axios } from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const StyledContainer = styled(Container)({
   height: '110vh',
@@ -54,11 +55,20 @@ const useStyles = {
   },
 };
 
-function Staff() {
+function Staffsignup() {
+  const navigate = useNavigate();
+
+  const hanclestafffsignupClick = () => {
+    console.log('Form submitted!', formData);
+    const response =  axios.post(`http://localhost:4000/userstaffRegister`,formData );
+    handleClose();
+   
+    navigate('/stafflogin');
+  };
   const [open, setOpen] = useState(false);
   const [formData, setFormData] = useState({
     username: '',
-    empId: '',
+    empID: '',
     division: '',
     email: '',
     contactNo: '',
@@ -76,7 +86,7 @@ function Staff() {
     setOpen(false);
     setFormData({
       username: '',
-      empId: '',
+      empID: '',
       division: '',
       email: '',
       contactNo: '',
@@ -93,8 +103,8 @@ function Staff() {
     if (!formData.username.trim()) {
       errors.username = 'Full name is required';
     }
-    if (!formData.empId.trim()) {
-      errors.empId = 'Employee ID is required';
+    if (!formData.empID.trim()) {
+      errors.empID = 'Employee ID is required';
     }
     if (!formData.division.trim()) {
       errors.division = 'Division is required';
@@ -128,12 +138,7 @@ function Staff() {
 
   };
 
-  const handleConfirmSubmit = () => {
-    console.log('Form submitted!', formData);
-    const response =  axios.post(`http://localhost:4000/api/reservation/filter`,formData );
-    handleClose();
-  };
-
+ 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevFormData) => ({
@@ -180,14 +185,14 @@ function Staff() {
                 <TextField
                   variant="outlined"
                   fullWidth
-                  id="empId"
+                  id="empID"
                   label="Employee ID"
-                  name="empId"
-                  autoComplete="empId"
-                  value={formData.empId}
+                  name="empID"
+                  autoComplete="empID"
+                  value={formData.empID}
                   onChange={handleInputChange}
-                  error={!!validationErrors.empId}
-                  helperText={validationErrors.empId}
+                  error={!!validationErrors.empID}
+                  helperText={validationErrors.empID}
                   style={useStyles.section}
                 />
 
@@ -294,7 +299,7 @@ function Staff() {
           </form>
 
           {/* Confirmation Dialog */}
-          <ConfirmSubmission open={open} handleClose={handleClose} handleConfirmSubmit={handleConfirmSubmit} />
+          <ConfirmSubmission open={open} handleClose={handleClose} handleConfirmSubmit={hanclestafffsignupClick}  />
         </StyledPaper>
       </StyledContainer>
       </Grid>
@@ -305,4 +310,4 @@ function Staff() {
   );
 }
 
-export default Staff;
+export default Staffsignup;

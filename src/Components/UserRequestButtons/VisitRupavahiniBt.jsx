@@ -1,8 +1,12 @@
 import React from 'react'
 import Button from '@mui/material/Button';
 import './button.css'
-
+import { useNavigate } from 'react-router-dom';
 function VisitRupavahiniBt() {
+  const navigate = useNavigate();
+  const handleVisitreq = () => {
+    navigate('/visit2');
+  };
   return (
     <div>
       <Button className="button" variant="contained" sx={{marginBottom: '2%',
@@ -12,7 +16,7 @@ function VisitRupavahiniBt() {
               transition: 'transform 0.3s',
               height: '20%',
               fontSize: '1.5vw',
-              width:'100%'}}>
+              width:'100%'}} onClick={handleVisitreq}>
         Request for vist Rupavahini
       </Button>
     </div>
