@@ -40,7 +40,7 @@ await axios.get('http://localhost:4000/user/:username')
 },[])
 
 useEffect(()=>async()=>{
-  await axios.get('http://localhost:4000/appointmentreq/:username1')
+  await axios.get('http://localhost:4000/appointmentreq/:Dinuk2000')
   .then(response => {
       // Handle the response data
       console.log(response.data); // Assuming response.data is an array of requests

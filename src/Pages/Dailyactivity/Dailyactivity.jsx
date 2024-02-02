@@ -3,12 +3,12 @@ import './Dailyactivity.css';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import BasicTable from './../../Components/Table/BasicTable';
-import Drawer from "./../../Components/Drawer/Drawer";
+import DrawerStaff from "./../../Components/Drawer/DrawerStaff";
 const Dailyactivity = () => {
   return (
     <>
-    <div className="bod">
-    <Drawer/>
+    <div className="bode">
+    <DrawerStaff/>
          <div className="blur-image" >
             <Grid container spacing={2} columns={16}>
   <Grid item xs={16} sx={{display:"flex",flexDirection:"column",justifyContent:"",alignItems:"center"}}>
