@@ -136,17 +136,21 @@ export default function ResponsiveDrawer({children}) {
 
     // Add logic here for each item click
     if (text === "Home") {
-      // Handle Home click
+      navigate('/userreq');
     } else if (text === "My Request") {
       navigate('/request');
     } else if (text === "Log Out") {
-      // Handle Log Out click
+      navigate('/userlogin');
     }
   };
 
   
   const handleDashboardclick = () => {
     navigate('/userreq');
+  };
+
+  const handleLogoutClick= () => {
+    navigate('/userlogin');
   };
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
@@ -262,10 +266,9 @@ export default function ResponsiveDrawer({children}) {
               </ResponsiveMenuItem>
 
               <ResponsiveMenuItem
-                onClick={() => {
-                  handleMenuClose();
-                  console.log('Logout Clicked');
-                }}
+                onClick={
+                  handleLogoutClick
+                }
                 onMouseEnter={() => handleItemHover('Logout')}
                 onMouseLeave={() => handleItemHover(null)}
                 style={{
