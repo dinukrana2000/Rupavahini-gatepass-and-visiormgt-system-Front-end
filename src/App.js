@@ -35,13 +35,13 @@ function App() {
     contactNumber: '0713304777',
   };
 
-  /*const staff = {
+  const staff = {
     employeeID: 'EMP001',
     userName: 'sunil perera',
     fullName: 'Sunil perera abcd',
     email: 'sunilpere@gmail.com',
     contactNumber: '0714859768',
-  };*/
+  };
   return (
     <div className="App">
     <BrowserRouter>
