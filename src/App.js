@@ -13,6 +13,9 @@ import UserAccEdit from './Pages/UserProfile/UserProfileAccEdit';
 import UserAccPwd from './Pages/UserProfile/UserProfilePwd';
 import Visit1 from './Pages/visit/visit1';
 import Visit2 from './Pages/visit/visit2';
+import StaffAcc from './Pages/UserProfile/StaffProfileAcc';
+import StaffAccEdit from './Pages/UserProfile/StaffProfileAccEdit';
+import StaffAccPwd from './Pages/UserProfile/StaffProfilePwd';
  //import Search from './Pages/Historysearch/staffpagehistory-searchday';
 //import Activity from './Pages/staffpagehistory-activity-view/Activity';
 
@@ -62,7 +65,10 @@ function App() {
       <Route path="/visit2" element={<Visit2/>} />
       {/*<Route path="/search" element={<Search/>} />*/}
       {/*<Route path="/activity" element={<Activity/>} />*/}
-      /*<Route path="/request" element={<Request/>} />*/
+      <Route path="/request" element={<Request/>} />
+      <Route path="/staffacc" element={<StaffAcc user={staff}/>} />
+      <Route path="/staffaccedit" element={<StaffAccEdit user={staff}/>} />
+      <Route path="/staffaccpwd" element={<StaffAccPwd user={staff}/>} />
       {/*<Route path="/dumydata" element={<Dumydata/>} />*/}
       {/*<Route path="/staffcomplain" element={<StaffComplain/>} />*/}
       

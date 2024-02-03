@@ -25,7 +25,7 @@ function Home() {
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', background: 'linear-gradient(to bottom, #973535, #D6C9CA)', width: '100%', height: '100vh', margin: 0 }}>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', background: 'linear-gradient(to bottom, #973535, #D6C9CA)', width: '100%', height: '100vh', margin: 0, }}>
       {/* Logo at the top middle */}
       <div style={{ textAlign: 'center', marginBottom: '5vw', marginTop: '1vw' }}>
         {/* logo image */}
@@ -36,7 +36,7 @@ function Home() {
         />
       </div>
 
-      <Paper elevation={10} style={{ padding: '2%', textAlign: 'center', maxWidth: '90%', display: 'flex' }}>
+      <Paper elevation={10} style={{ padding: '2%', textAlign: 'center', maxWidth: '90%', display: 'flex', }}>
         {/* Left half with the image */}
         <div style={{ flex: 1 }}>
           <img

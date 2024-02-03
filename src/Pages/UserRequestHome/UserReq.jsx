@@ -3,7 +3,7 @@ import Drawer from '../../Components/Drawer/Drawer';
 import { styled } from '@mui/material/styles';
 import VisitRupavahiniBt from '../../Components/UserRequestButtons/VisitRupavahiniBt';
 import AppoinmentBt from '../../Components/UserRequestButtons/AppoinmentBt';
-
+import { useNavigate } from 'react-router-dom';
 
 //const GlobalStyle = styled('div')({
   //height: '100vh',
@@ -27,15 +27,22 @@ const BodyWithBackground = styled('div')({
 });
 
 function UserReq() {
+  const navigate = useNavigate();
+  const handlappoinmt = () => {
+    navigate('/visit1');
+  }
+  const handleVisitreq = () => {
+    navigate('/visit2');
+  };
   return (
     <BodyWithBackground>
       <Drawer>
         <main>
           <CenteredContent>
             
-             <VisitRupavahiniBt/>
+             <VisitRupavahiniBt handleVisitreqbt={handleVisitreq} />
           <br/>
-            <AppoinmentBt/>
+            <AppoinmentBt handlappoinmtbt={handlappoinmt}/>
             
           </CenteredContent>
         </main>

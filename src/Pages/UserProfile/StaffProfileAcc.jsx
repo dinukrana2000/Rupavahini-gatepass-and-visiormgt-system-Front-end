@@ -9,12 +9,14 @@ import {
   Menu,
   MenuItem,
 } from '@mui/material';
-import Drawer from '../../Components/Drawer/Drawer';
+import DrawerStaff from "./../../Components/Drawer/DrawerStaff";
 import SettingsIcon from '@mui/icons-material/Settings';
+import { useNavigate } from 'react-router-dom';
 //import axios from 'axios';
 
 function StaffProfileAcc({ user }) {
   const [anchorEl, setAnchorEl] = useState(null);
+  const navigate = useNavigate();
   //const [user, setUser] = useState(null);
   /*useEffect(() => {
     const fetchUserData = async () => {
@@ -41,18 +43,20 @@ function StaffProfileAcc({ user }) {
   const handleEditProfile = () => {
     console.log('Edit Profile clicked');
     handleMenuClose();
+    navigate('/staffaccedit');
     // Add logic for handling Edit Profile
   };
 
   const handleChangePassword = () => {
     console.log('Change Password clicked');
     handleMenuClose();
+    navigate('/staffaccpwd');
     // Add logic for handling Change Password
   };
 
   return (
     <>
-      <Drawer />
+      <DrawerStaff />
       <Box
         sx={{
           backgroundColor: '#D6C9CF',

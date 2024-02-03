@@ -11,8 +11,10 @@ import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import HomeIcon from '@mui/icons-material/Home';
+import ReportIcon from '@mui/icons-material/Report';
+import TodayIcon from '@mui/icons-material/Today';
 import AssignmentIcon from '@mui/icons-material/Assignment';
+import HistoryIcon from '@mui/icons-material/History';
 import LogoutIcon from '@mui/icons-material/Logout';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -24,7 +26,7 @@ import Menu from '@mui/material/Menu';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
-
+import { useNavigate } from 'react-router-dom';
 
 const drawerWidth = 240;
 
@@ -122,6 +124,42 @@ const ResponsiveMenuItem = styled(MenuItem)(({ theme }) => ({
 }));
 
 export default function ResponsiveDrawer({children}) {
+
+  const navigate = useNavigate();
+
+  const handleAccountclick = () => {
+
+    navigate('/staffacc');
+  };
+
+
+  const handleItemClick = (text) => {
+    console.log(`${text} Clicked`);
+
+    // Add logic here for each item click
+    if (text === "Today Activity") {
+      navigate('/dailyactivity');
+      
+    }else if (text === "History") {
+      navigate('*');
+    } else if (text === "Request") {
+      navigate('*');
+    } else if (text === "Complaints") {
+      navigate('*');
+    }else if (text === "Log Out") {
+      navigate('/stafflogin');
+    }
+    
+  };
+
+  
+  const handleDashboardclick = () => {
+    navigate('/dailyactivity');
+  };
+
+  const handleLogoutClick= () => {
+    navigate('/stafflogin');
+  };
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const [hoveredItem, setHoveredItem] = React.useState(null);
@@ -204,10 +242,9 @@ export default function ResponsiveDrawer({children}) {
               }}
             >
               <ResponsiveMenuItem
-                onClick={() => {
-                  handleMenuClose();
-                  console.log('Account Clicked');
-                }}
+                onClick={
+                  handleAccountclick
+                }
                 onMouseEnter={() => handleItemHover('Account')}
                 onMouseLeave={() => handleItemHover(null)}
                 style={{
@@ -221,10 +258,9 @@ export default function ResponsiveDrawer({children}) {
               </ResponsiveMenuItem>
 
               <ResponsiveMenuItem
-                onClick={() => {
-                  handleMenuClose();
-                  console.log('Dashboard Clicked');
-                }}
+                onClick={
+                 handleDashboardclick
+                }
                 onMouseEnter={() => handleItemHover('Dashboard')}
                 onMouseLeave={() => handleItemHover(null)}
                 style={{
@@ -238,10 +274,9 @@ export default function ResponsiveDrawer({children}) {
               </ResponsiveMenuItem>
 
               <ResponsiveMenuItem
-                onClick={() => {
-                  handleMenuClose();
-                  console.log('Logout Clicked');
-                }}
+                onClick={
+                  handleLogoutClick
+                }
                 onMouseEnter={() => handleItemHover('Logout')}
                 onMouseLeave={() => handleItemHover(null)}
                 style={{
@@ -279,29 +314,29 @@ export default function ResponsiveDrawer({children}) {
         </DrawerHeader>
         <Divider />
         <List>
-          {[{ text: 'Home', icon: <HomeIcon />, color: '#973535' },
-            { text: 'My Request', icon: <AssignmentIcon />, color: '#973535' },
-            { text: 'Log Out', icon: <LogoutIcon />, color: '#973535' }].map((item, index) => (
-              <ListItem key={item.text} disablePadding>
-                <ListItemButton
-                  onClick={() => {
-                    console.log(`${item.text} Clicked`);
-                  }}
-                  onMouseEnter={() => handleItemHover(item.text)}
-                  onMouseLeave={() => handleItemHover(null)}
-                  sx={{
-                    '&:hover': {
-                      color: hoveredItem === item.text ? '#eec01f' : '#973535',
-                    },
-                    color: hoveredItem === item.text ? '#eec01f' : item.color,
-                  }}
-                >
-                  <ListItemIcon style={{ color: item.color }}>{item.icon}</ListItemIcon>
-                  <ListItemText primary={item.text} />
-                </ListItemButton>
-              </ListItem>
-            ))}
-        </List>
+      {[{ text: 'Today Activity', icon: <TodayIcon />, color: '#973535' },
+        { text: 'History', icon: <HistoryIcon />, color: '#973535' },
+        { text: 'Request', icon: <AssignmentIcon />, color: '#973535' },
+        { text: 'Complaints', icon: <ReportIcon />, color: '#973535' },
+        { text: 'Log Out', icon: <LogoutIcon />, color: '#973535' }].map((item, index) => (
+          <ListItem key={item.text} disablePadding>
+            <ListItemButton
+              onClick={() => handleItemClick(item.text)}
+              onMouseEnter={() => handleItemHover(item.text)}
+              onMouseLeave={() => handleItemHover(null)}
+              sx={{
+                '&:hover': {
+                  color: hoveredItem === item.text ? '#eec01f' : '#973535',
+                },
+                color: hoveredItem === item.text ? '#eec01f' : item.color,
+              }}
+            >
+              <ListItemIcon style={{ color: item.color }}>{item.icon}</ListItemIcon>
+              <ListItemText primary={item.text} />
+            </ListItemButton>
+          </ListItem>
+        ))}
+    </List>
       </Drawer>
       <Main open={open}>
        {children}

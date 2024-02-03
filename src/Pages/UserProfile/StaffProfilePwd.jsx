@@ -12,17 +12,18 @@ import {
   Button,
   InputAdornment
 } from '@mui/material';
-import Drawer from '../../Components/Drawer/Drawer';
+import DrawerStaff from "./../../Components/Drawer/DrawerStaff";
 import SettingsIcon from '@mui/icons-material/Settings';
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Cancel';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 
 function UserProfileAccEdit({ user }) {
+  const navigate = useNavigate();
   const [editing, setEditing] = useState(true);
   const [editedUser, setEditedUser] = useState({
     userName: user.userName,
@@ -51,6 +52,7 @@ function UserProfileAccEdit({ user }) {
   const handleEditProfile = () => {
     console.log('Edit Profile clicked');
     handleMenuClose();
+    navigate('/staffaccedit');
     // Add logic for handling Edit Profile
   };
 
@@ -58,6 +60,7 @@ function UserProfileAccEdit({ user }) {
   const handleChangePassword = () => {
     console.log('Change Password clicked');
     handleMenuClose();
+    navigate('/staffaccpwd');
     // Add logic for handling Change Password
   };
 
@@ -133,7 +136,7 @@ function UserProfileAccEdit({ user }) {
 
   return (
     <>
-      <Drawer />
+      <DrawerStaff />
       <Box
         sx={{
           backgroundColor: '#D6C9CF',
