@@ -51,7 +51,7 @@ function User_login() {
       setErrors({});
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
       e.preventDefault();
       const Error = {};
 
@@ -69,10 +69,27 @@ function User_login() {
         handleOpen();
       }
 
-      console.log('Form submited!', formData);
-      const response =  axios.post(`http://localhost:4000/LoginUser`,formData );
-      handleClose();
-      navigate('/userreq');
+      
+      console.log('Form submitted!', formData);
+    axios.post(`http://localhost:4000/LoginUser`, formData)
+      .then(response => {
+        console.log('Response:', response.data);
+        if (response.data.error) {
+          alert(response.data.error);
+        } else {
+          if (response.status === 201) {
+            alert('User Login  successfully!');
+            handleClose();
+            navigate('/userreq');
+          } else {
+            alert('An error occurred. Please try again 1.');
+          }
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred. Please try again 2.');
+      });
   };
 
   

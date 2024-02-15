@@ -23,7 +23,7 @@ function Staff_login() {
   }
   const [open, setOpen] = useState(false);
   const [formData, setFormData] = useState({
-      empId: '',
+      empID: '',
       password: ''
   });
 
@@ -44,18 +44,18 @@ function Staff_login() {
   const handleClose = () => {
       setOpen(false);
       setFormData({
-          empId:'',
+          empID:'',
           password:''
       });
       setErrors({});
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
       e.preventDefault();
       const Error = {};
 
-      if (!formData.empId.trim()) {
-        Error.empId = "User name is required";
+      if (!formData.empID.trim()) {
+        Error.empID = "User name is required";
       }
       if (!formData.password.trim()) {
         Error.password = "Password is required";
@@ -67,10 +67,26 @@ function Staff_login() {
       } else {
         handleOpen();
       }
-      console.log('Form submited!', formData);
-    const response =  axios.post(`http://localhost:4000/LoginStaff`,formData );
-    handleClose();
-      navigate('/dailyactivity');
+      console.log('Form submitted!', formData);
+    axios.post(`http://localhost:4000/LoginStaff`, formData)
+      .then(response => {
+        console.log('Response:', response.data);
+        if (response.data.error) {
+          alert(response.data.error);
+        } else {
+          if (response.status === 201) {
+            alert('Staff Login  successfully!');
+            handleClose();
+            navigate('/Dailyactivity');
+          } else {
+            alert('An error occurred. Please try again 1.');
+          }
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred. Please try again 2.');
+      });
 
   };
 
@@ -103,15 +119,15 @@ function Staff_login() {
         <form onSubmit={handleSubmit}>
             
               <TextField
-                id='empId'
-                name='empId'
+                id='empID'
+                name='empID'
                 label='Emp Id'
                 fullWidth
                 variant='standard'
-                value={formData.empId}
+                value={formData.empID}
                 onChange={handleInputChange}
-                error={!!errors.empId}
-                helperText={errors.empId}
+                error={!!errors.empID}
+                helperText={errors.empID}
                 style={{marginBottom: '10%'}}
               />
             
