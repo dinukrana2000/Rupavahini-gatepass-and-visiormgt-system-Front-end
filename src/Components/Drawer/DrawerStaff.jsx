@@ -27,6 +27,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import { useNavigate } from 'react-router-dom';
+import EventIcon from '@mui/icons-material/Event';
 
 const drawerWidth = 240;
 
@@ -148,6 +149,12 @@ export default function ResponsiveDrawer({children}) {
       navigate('*');
     }else if (text === "Log Out") {
       navigate('/stafflogin');
+    }
+    else if (text === "My Request") {
+      navigate('*');
+    }
+    else if (text === "Appoinment") {
+      navigate('*');
     }
     
   };
@@ -316,7 +323,9 @@ export default function ResponsiveDrawer({children}) {
         <List>
       {[{ text: 'Today Activity', icon: <TodayIcon />, color: '#973535' },
         { text: 'History', icon: <HistoryIcon />, color: '#973535' },
+        { text: 'My Request', icon: <AssignmentIcon />, color: '#973535' },
         { text: 'Request', icon: <AssignmentIcon />, color: '#973535' },
+        { text: 'Appoinment', icon: <EventIcon />, color: '#973535' },
         { text: 'Complaints', icon: <ReportIcon />, color: '#973535' },
         { text: 'Log Out', icon: <LogoutIcon />, color: '#973535' }].map((item, index) => (
           <ListItem key={item.text} disablePadding>
