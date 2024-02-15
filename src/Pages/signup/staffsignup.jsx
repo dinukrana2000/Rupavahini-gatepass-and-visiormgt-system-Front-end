@@ -60,11 +60,27 @@ function Staffsignup() {
 
   const hanclestafffsignupClick = () => {
     console.log('Form submitted!', formData);
-    const response =  axios.post(`http://localhost:4000/userstaffRegister`,formData );
-    handleClose();
-   
-    navigate('/stafflogin');
-  };
+    axios.post(`http://localhost:4000/userstaffRegister`, formData)
+      .then(response => {
+        console.log('Response:', response.data);
+        if (response.data.error) {
+          alert(response.data.error);
+        } else {
+          if (response.status === 200) {
+            alert('Staff registered successfully!');
+            handleClose();
+            navigate('/stafflogin');
+          } else {
+            alert('An error occurred. Please try again.');
+          }
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred. Please try again.');
+      });
+};
+
   const [open, setOpen] = useState(false);
   const [formData, setFormData] = useState({
     username: '',
@@ -96,7 +112,7 @@ function Staffsignup() {
     setValidationErrors({});
     
   };
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const errors = {};
 

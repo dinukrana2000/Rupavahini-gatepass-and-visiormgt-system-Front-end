@@ -53,11 +53,27 @@ function User() {
 
   const hanclesignupClick = () => {
     console.log('Form submitted!', formData);
-    const response =  axios.post(`http://localhost:4000/userRegister`,formData );
-    handleClose();
-   
-    navigate('/userlogin');
-  };
+    axios.post(`http://localhost:4000/userRegister`, formData)
+      .then(response => {
+        console.log('Response:', response.data);
+        if (response.data.error) {
+          alert(response.data.error);
+        } else {
+          if (response.status === 200) {
+            alert('User registered successfully!');
+            handleClose();
+            navigate('/userlogin');
+          } else {
+            alert('An error occurred. Please try again.');
+          }
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred. Please try again.');
+      });
+};
+
   const [open, setOpen] = useState(false);
   const [formData, setFormData] = useState({
     username: '',
