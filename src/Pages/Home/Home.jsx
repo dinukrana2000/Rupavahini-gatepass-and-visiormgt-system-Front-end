@@ -86,7 +86,7 @@ function Home() {
             startIcon={<AccountCircleIcon style={{ fontSize: '2vw' }} />}
             onClick={handleUserButtonClick}
           >
-            USER
+            Guest
           </Button>
 
           <Button
