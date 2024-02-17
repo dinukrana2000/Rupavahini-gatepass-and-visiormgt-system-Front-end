@@ -4,14 +4,19 @@ import Calender from "../../Components/Calender/Cal";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
-import Drawer from "../../Components/Drawer/Drawer";
-
+import Drawer from "../../Components/Drawer/DrawerStaff";
+import { useNavigate } from 'react-router-dom';
 
 const Request = () => {
   const [clickedDate, setClickedDate] = useState("");
- 
+  const navigate=useNavigate();
+  const handleviewClick=()=>{
+    navigate('/activity');
+  };
+
   return (
     <>
+    <div className="out">
     <Drawer/>
     <div>
       <div className="blur-image">
@@ -40,24 +45,24 @@ const Request = () => {
             <Grid container ></Grid>
             <Grid item xs={6}>{clickedDate}</Grid>
             <Grid item xs={6}><div>
-              <Link to={'/search/1/view'}><Button
+              <Button
             variant="contained"
             sx={{
               backgroundColor: "#973535",marginLeft:"20px",
               borderRadius: "20px",width:"100px",height:"4vh",
               "&:hover": {  backgroundColor:"#811F15",color: "#EEC01F" },
             }}
-            
+            onClick={handleviewClick}
           >
             view
           </Button>
-          </Link>
+          
           </div></Grid>
             </div>
           </Grid>
         </Grid>
       </div>
-    </div>
+    </div></div>
     </>
   );
 };

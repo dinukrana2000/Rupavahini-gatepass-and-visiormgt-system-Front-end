@@ -16,18 +16,18 @@ import Visit2 from './Pages/visit/visit2';
 import StaffAcc from './Pages/UserProfile/StaffProfileAcc';
 import StaffAccEdit from './Pages/UserProfile/StaffProfileAccEdit';
 import StaffAccPwd from './Pages/UserProfile/StaffProfilePwd';
- //import Search from './Pages/Historysearch/staffpagehistory-searchday';
-//import Activity from './Pages/staffpagehistory-activity-view/Activity';
-
+import StaffComplain from './Pages/staffcomplain/staffcomplain';
+import Search from './Pages/Historysearch/staffpagehistory-searchday';
+import Activity from './Pages/staffpagehistory-activity-view/Activity';
 import Request from './Pages/Request/Request'; 
-
+import Staff_req from './Pages/Staffrequest/Staff_req';
  
 import { BrowserRouter , Route, Routes } from 'react-router-dom';
 
-//import Dumydata from './Pages/UserProfile/Dumydata';
 
 
-//import StaffComplain from './Pages/staffcomplain/staffcomplain';
+
+
 
 
 function App() {
@@ -63,15 +63,15 @@ function App() {
       <Route path="/useraccpwd" element={<UserAccPwd user={user}/>} />
       <Route path="/visit1" element={<Visit1/>} />
       <Route path="/visit2" element={<Visit2/>} />
-      {/*<Route path="/search" element={<Search/>} />*/}
-      {/*<Route path="/activity" element={<Activity/>} />*/}
+      <Route path="/search" element={<Search/>} />
+      <Route path="/activity" element={<Activity/>} />
       <Route path="/request" element={<Request/>} />
       <Route path="/staffacc" element={<StaffAcc user={staff}/>} />
       <Route path="/staffaccedit" element={<StaffAccEdit user={staff}/>} />
       <Route path="/staffaccpwd" element={<StaffAccPwd user={staff}/>} />
-      {/*<Route path="/dumydata" element={<Dumydata/>} />*/}
-      {/*<Route path="/staffcomplain" element={<StaffComplain/>} />*/}
-      
+  
+      <Route path="/staffcomplain" element={<StaffComplain/>} />
+      <Route path="/staffreq" element={<Staff_req/>} />
       </Routes>
   </BrowserRouter>
 

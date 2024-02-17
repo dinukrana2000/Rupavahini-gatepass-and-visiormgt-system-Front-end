@@ -142,11 +142,11 @@ export default function ResponsiveDrawer({children}) {
       navigate('/dailyactivity');
       
     }else if (text === "History") {
-      navigate('*');
+      navigate('/search');
     } else if (text === "Request") {
-      navigate('*');
+      navigate('/staffreq');
     } else if (text === "Complaints") {
-      navigate('*');
+      navigate('/staffcomplain');
     }else if (text === "Log Out") {
       navigate('/stafflogin');
     }

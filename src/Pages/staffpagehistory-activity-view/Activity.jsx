@@ -3,10 +3,13 @@ import './Activity.css';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import BasicTable from '../../Components/Table/BasicTable';
-import Drawer from "../../Components/Drawer/Drawer";
+import Drawer from "../../Components/Drawer/DrawerStaff";
 const Activity = () => {
   return (
-    <><Drawer/>
+    <>
+    <div className='out'>
+    <Drawer/>
+
          <div className="blur-image">
             <Grid container spacing={2} columns={16}>
   <Grid item xs={16} sx={{display:"flex",flexDirection:"column",justifyContent:"",alignItems:"center"}}>
@@ -22,7 +25,7 @@ const Activity = () => {
 </Grid>
 
       
-    </div>
+    </div></div>
     </>
   )
 }
