@@ -2,8 +2,8 @@ import React from 'react';
 import Home from './Pages/Home/Home';
 import User_Login from './Pages/Login/User_login';
 import Staff_Login from './Pages/Login/Staff_Login';
-import Usersignup from './Pages/signup/Usersignup';
-import Staffsignup from './Pages/signup/Staffsignup';
+import Usersignup from './Pages/signup/usersignup';
+import Staffsignup from './Pages/signup/staffsignup';
 import UserReq from './Pages/UserRequestHome/UserReq';
 import Dailyactivity from './Pages/Dailyactivity/Dailyactivity';
 import Forgot from './Pages/Password/Forgot_Pwd';
@@ -47,9 +47,12 @@ function App() {
   };
   return (
     <div className="App">
-    <BrowserRouter>
+   
+
+   <BrowserRouter>
+    
     <Routes>
-      <Route path="/" element={<Home/>} />
+     <Route path="/" element={<Home/>} />
       <Route path="/userlogin" element={<User_Login/>} />
       <Route path="/stafflogin" element={<Staff_Login/>} />
       <Route path="/usersignup" element={<Usersignup/>} />
@@ -66,14 +69,9 @@ function App() {
       <Route path="/search" element={<Search/>} />
       <Route path="/activity" element={<Activity/>} />
       <Route path="/request" element={<Request/>} />
-      <Route path="/staffacc" element={<StaffAcc user={staff}/>} />
-      <Route path="/staffaccedit" element={<StaffAccEdit user={staff}/>} />
-      <Route path="/staffaccpwd" element={<StaffAccPwd user={staff}/>} />
-  
-      <Route path="/staffcomplain" element={<StaffComplain/>} />
-      <Route path="/staffreq" element={<Staff_req/>} />
-      </Routes>
-  </BrowserRouter>
+    
+      </Routes> 
+  </BrowserRouter> 
 
     </div> 
   );

@@ -8,21 +8,37 @@ import axios from "axios";
 
 const Request = () => {
  
- 
   const [visitRequests, setVisitRequests] = useState([]);
   const [appoinmentRequests, setAppoinmentRequests] = useState([]);
-const handleDeleteRequest = (requestId,type) => {
+
+const handleDeleteRequest=async (requestId,type) => {
 
   if(type==='visit')
   {
-    const updatedRequests = visitRequests.filter(request => request._id !== requestId);
-  
-    setVisitRequests(updatedRequests);
+    await axios.delete(`http://localhost:4000/deleterupreq/${requestId}`)
+    .then(response => {
+      // Handle the response data
+      const updatedRequests = visitRequests.filter(request => request._id !== requestId);  
+      setVisitRequests(updatedRequests);
+  })
+  .catch(error => {
+      // Handle errors
+      console.error('Error fetching data:', error);
+  });
+    
   }
   else{
-    const updatedRequests = appoinmentRequests.filter(request => request._id !== requestId);
-  
-    setAppoinmentRequests(updatedRequests);
+    await axios.delete(`http://localhost:4000/deleteappoinment/${requestId}`)
+    .then(response => {
+      // Handle the response data
+      const updatedRequests = appoinmentRequests.filter(request => request._id !== requestId);  
+      setAppoinmentRequests(updatedRequests);
+  })
+  .catch(error => {
+      // Handle errors
+      console.error('Error fetching data:', error);
+  });
+    
   }
  
 };
@@ -40,7 +56,7 @@ await axios.get('http://localhost:4000/user/:username')
 },[])
 
 useEffect(()=>async()=>{
-  await axios.get('http://localhost:4000/appointmentreq/:Dinuk2000')
+  await axios.get('http://localhost:4000/appointmentreq/:username')
   .then(response => {
       // Handle the response data
       console.log(response.data); // Assuming response.data is an array of requests
@@ -51,14 +67,14 @@ useEffect(()=>async()=>{
       console.error('Error fetching data:', error);
   });
   },[])
-  
+   
 
   return (
     <>
-    <div className="bod">
     <Drawer/> 
     <div>
-      <div className="blur-image">
+      <div className="blur-image" >
+      <div style={{ height: "450px", overflowY: "auto" }}>
      {visitRequests.map(request => (
         <div className="rectangle-col" key={request._id}>
         <Grid container className="rectangle" spacing={0}>
@@ -90,7 +106,8 @@ useEffect(()=>async()=>{
         </div>
       ))} 
       </div>
-      </div></div>
+      </div>
+      </div>
       </>
   );
 };
