@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState ,useEffect} from 'react';
 import {
   Card,
   CardContent,
@@ -18,24 +18,59 @@ import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Cancel';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import Avatar from '@mui/material/Avatar';
+import PersonIcon from '@mui/icons-material/Person';
 
 
-
-function UserProfileAccEdit({ user }) {
+function UserProfileAccEdit() {
   
   const navigate = useNavigate();
 
 
   const [editing, setEditing] = useState(true);
+  const [initialUser, setInitialUser] = useState(null);
   const [editedUser, setEditedUser] = useState({
-    fullName: user.fullName,
-    userName: user.userName,
-    email: user.email,
-    contactNumber: user.contactNumber,
+    fullname: '',
+    username: '',
+    email: '',
+    contactNo: '',
   });
   
   const [anchorEl, setAnchorEl] = useState(null);
   const [imageFile, setImageFile] = useState(null);
+  const [changesSaved, setChangesSaved] = useState(false);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.post('http://localhost:4000/userdataheader', {}, {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('myAppToken')}`, // Assuming the token is stored in local storage
+          },
+        });
+
+        if (response.status !== 200) {
+          throw new Error('Failed to fetch user data');
+        }
+
+        const userData = response.data.data;
+        setInitialUser(userData);
+        setEditedUser({
+          fullname: userData.fullname,
+          username: userData.username,
+          email: userData.email,
+          contactNo: userData.contactNo,
+          image: userData.image, 
+        });
+        console.log('User data:', response.data.data);
+      } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred while fetching user data. Please try again later.');
+      }
+    };
+
+    fetchUserData();
+  }, []);
 
   const handleSettingsClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -61,38 +96,71 @@ function UserProfileAccEdit({ user }) {
   };
 
   const handleFieldChange = (fieldName, value) => {
+    if (fieldName === 'username' && !editing) {
+      return; // Do not update username field if not in editing mode
+    }
+
     setEditedUser((prevUser) => ({
       ...prevUser,
       [fieldName]: value,
     }));
   };
 
+  const validateForm = () => {
+    let errorMessage = '';
+    if (!editedUser.fullname.trim()) {
+      errorMessage = 'Full name is required';
+    } else if (!editedUser.username.trim()) {
+      errorMessage = 'Username is required';
+    } else if (!/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/.test(editedUser.email)) {
+      errorMessage = 'Please enter a valid email address';
+    } else if (!/^\d{10}$/.test(editedUser.contactNo)) {
+      errorMessage = 'Please enter a valid contact number';
+    }
+  
+    if (errorMessage) {
+      alert(errorMessage);
+      return false;
+    }
+  
+    return true;
+  };
+
   const handleSaveChanges = async () => {
+    if (!validateForm()) {
+      return;
+    }
+    
     const formData = new FormData();
-    formData.append('fullName', editedUser.fullName);
-    formData.append('userName', editedUser.userName);
+    formData.append('fullname', editedUser.fullname);
+    formData.append('username', editedUser.username);
     formData.append('email', editedUser.email);
-    formData.append('contactNumber', editedUser.contactNumber);
+    formData.append('contactNo', editedUser.contactNo);
   
     // Append the image if it exists
     if (imageFile) {
-      formData.append('image', imageFile);
+      formData.append('image', imageFile, imageFile.image);
     }
   
     try {
-      const response = await axios.post('/api/user-profile', formData, {
+      const response = await axios.put(`http://localhost:4000/update-user/${editedUser.username}`, formData,{
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
+      
   
       if (response.status !== 200) {
         throw new Error('Failed to save changes');
       }
   
       setEditing(false);
+      setChangesSaved(true);
+      alert('Changes saved successfully');
+      
     } catch (error) {
       console.error('Error:', error);
+      console.log(error.response.data); // Log the server's response
       alert('An error occurred while saving changes. Please try again later.');
     }
   };
@@ -100,10 +168,11 @@ function UserProfileAccEdit({ user }) {
   const handleCancel = () => {
     // Handle cancel logic to revert changes
     setEditedUser({
-      fullName: user.fullName,
-      userName: user.userName,
-      email: user.email,
-      contactNumber: user.contactNumber,
+      fullname: initialUser.fullname,
+      username: initialUser.username,
+      email: initialUser.email,
+      contactNo: initialUser.contactNo,
+      image: initialUser.image,
     });
   };
 
@@ -135,28 +204,21 @@ function UserProfileAccEdit({ user }) {
           <CardContent>
             <Grid container spacing={2} alignItems="center">
               <Grid item xs={12} sm={6} md={4} lg={3}>
-                <img
-                  src="https://eapl15616.weebly.com/uploads/1/4/6/1/146126864/whatsapp-image-2024-01-28-at-4-34-03-pm_orig.jpeg"
-                  alt="hello"
-                  style={{
-                    width: '100px',
-                    height: '100px',
-                    borderRadius: '50%',
-                    margin: '0 auto',
-                    float: 'left',
-                  }}
-                />
-                {/*<img
-          src={user.profilePictureUrl}
-          alt={`${user.userName}'s profile picture`}
-          style={{
-            width: '100px',
-            height: '100px',
-            borderRadius: '50%',
-            margin: '0 auto',
-            float: 'left',
-          }}
-        />   this the correct code when get image form back end*/}
+              <Avatar
+      src={editedUser && editedUser.image ? `http://localhost:4000/${editedUser.image}` : null}
+      alt="User profile"
+      style={{
+        width: '100px',
+        height: '100px',
+        borderRadius: '50%',
+        margin: '0 auto',
+        float: 'left',
+        backgroundColor: editedUser && editedUser.image ? null : '#808080',
+      }}
+    >
+      {editedUser && !editedUser.image && <PersonIcon />}
+    </Avatar>
+               
               </Grid>
               <Grid item xs={12} sm={6} md={8} lg={9}>
                 <Typography
@@ -168,7 +230,7 @@ function UserProfileAccEdit({ user }) {
                   lg={9}
                   color="#973535"
                 >
-                  {user.userName}
+                  {editedUser.username}
                 </Typography>
               </Grid>
             </Grid>
@@ -196,8 +258,8 @@ function UserProfileAccEdit({ user }) {
                   label="Full Name"
                   fullWidth
                   variant="filled"
-                  value={editedUser.fullName}
-                  onChange={(e) => handleFieldChange('fullName', e.target.value)}
+                  value={editedUser.fullname}
+                  onChange={(e) => handleFieldChange('fullname', e.target.value)}
                   disabled={!editing}
                   InputLabelProps={{
                     style: { color: '#973535' } 
@@ -209,9 +271,10 @@ function UserProfileAccEdit({ user }) {
                   label="User Name"
                   fullWidth
                   variant="filled"
-                  value={editedUser.userName}
-                  onChange={(e) => handleFieldChange('userName', e.target.value)}
-                  disabled={!editing}
+                  value={editedUser.username}
+                  onChange={(e) => handleFieldChange('username', e.target.value)}
+                  disabled={editing||changesSaved}
+                  
                   InputLabelProps={{
                     style: { color: '#973535' } 
                   }}
@@ -235,8 +298,8 @@ function UserProfileAccEdit({ user }) {
                   label="Contact Number"
                   fullWidth
                   variant="filled"
-                  value={editedUser.contactNumber}
-                  onChange={(e) => handleFieldChange('contactNumber', e.target.value)}
+                  value={editedUser.contactNo}
+                  onChange={(e) => handleFieldChange('contactNo', e.target.value)}
                   disabled={!editing}
                   InputLabelProps={{
                     style: { color: '#973535' } 
@@ -246,6 +309,7 @@ function UserProfileAccEdit({ user }) {
               </Grid>
               <Grid item xs={8}>
       <Input
+      id="upload-image-input"
         type="file"
         fullWidth
         inputProps={{
@@ -261,7 +325,7 @@ function UserProfileAccEdit({ user }) {
           style: { color: '#973535' },
         }}
       />
-      <label htmlFor="contained-button-file">
+      <label htmlFor="upload-image-input">
         <Button
           variant="contained"
           component="span"
