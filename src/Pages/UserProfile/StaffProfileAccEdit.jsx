@@ -260,7 +260,7 @@ function UserProfileAccEdit() {
                   variant="filled"
                   value={editedUser.empID}
                   onChange={(e) => handleFieldChange('empID', e.target.value)}
-                  disabled={editing}
+                  disabled={editing||changesSaved}
                   InputLabelProps={{
                     style: { color: '#973535' } 
                   }}
