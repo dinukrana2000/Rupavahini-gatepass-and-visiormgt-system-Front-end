@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import {
   Card,
   CardContent,
@@ -20,26 +20,59 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import Avatar from '@mui/material/Avatar';
+import PersonIcon from '@mui/icons-material/Person';
 
 
-function UserProfileAccEdit({ user }) {
+function UserProfileAccEdit() {
   const navigate = useNavigate();
   const [editing, setEditing] = useState(true);
   const [editedUser, setEditedUser] = useState({
-    userName: user.userName,
-    currentPassword: '',
+    empID:'',
+    oldPassword: '',
     newPassword: '',
     reEnterNewPassword: '',
   });
 
+  const [changesSaved, setChangesSaved] = useState(false);
+
   const [showPassword, setShowPassword] = useState({
-    currentPassword: false,
+    oldPassword: false,
     newPassword: false,
     reEnterNewPassword: false,
   });
   
   const [anchorEl, setAnchorEl] = useState(null);
-
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.post('http://localhost:4000/staffdataheader', {}, {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('myAppToken')}`, // Assuming the token is stored in local storage
+          },
+        });
+  
+        if (response.status !== 200) {
+          throw new Error('Failed to fetch staff data');
+        }
+  
+        const userData = response.data.data;
+        setEditedUser({
+          empID: userData.empID,
+          oldPassword: '',
+          newPassword: '',
+          reEnterNewPassword: '',
+          image: userData.image, // Add this line
+        });
+       
+      } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred while fetching user data. Please try again later.');
+      }
+    };
+  
+    fetchUserData();
+  }, []);
 
   const handleSettingsClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -65,6 +98,9 @@ function UserProfileAccEdit({ user }) {
   };
 
   const handleFieldChange = (fieldName, value) => {
+    if (fieldName === 'empID' && !editing) {
+      return; // Do not update username field if not in editing mode
+    }
     setEditedUser((prevUser) => ({
       ...prevUser,
       [fieldName]: value,
@@ -72,24 +108,25 @@ function UserProfileAccEdit({ user }) {
   };
 
   const handleSaveChanges = async () => {
-    const formData = new FormData();
-    formData.append('userName', editedUser.userName);
-    formData.append('currentPassword', editedUser.currentPassword);
-    formData.append('newPassword', editedUser.newPassword);
-    formData.append('reEnterNewPassword', editedUser.reEnterNewPassword);
-
+    const data = {
+      
+      oldPassword: editedUser.oldPassword,
+      newPassword: editedUser.newPassword,
+    };
     try {
-      const response = await axios.post('/api/user-profile', formData, {
+      const response = await axios.put(`http://localhost:4000/updatestaffpassword/${editedUser.empID}`, data, {
         headers: {
-          'Content-Type': 'multipart/form-data',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('myAppToken')}`, // Assuming the token is stored in local storage
         },
       });
 
       if (response.status !== 200) {
         throw new Error('Failed to save changes');
       }
-
+      setChangesSaved(true);
       setEditing(false);
+      alert("Password updated successfully");
     } catch (error) {
       console.error('Error:', error);
       alert('An error occurred while saving changes. Please try again later.');
@@ -99,11 +136,12 @@ function UserProfileAccEdit({ user }) {
   const handleCancel = () => {
     // Handle cancel logic to revert changes
     setEditedUser({
-        userName: user.userName,
-        currentPassword: '',
-        newPassword: '',
-        reEnterNewPassword: '',
-    });
+      empID: editedUser.empID,
+      oldPassword: '',
+      newPassword: '',
+      reEnterNewPassword: '',
+      image: editedUser.image,
+  });
   };
   const handlePasswordVisibility = (fieldName) => {
     setShowPassword((prevState) => ({
@@ -160,28 +198,20 @@ function UserProfileAccEdit({ user }) {
           <CardContent>
             <Grid container spacing={2} alignItems="center">
               <Grid item xs={12} sm={6} md={4} lg={3}>
-                <img
-                  src="https://eapl15616.weebly.com/uploads/1/4/6/1/146126864/whatsapp-image-2024-01-28-at-4-34-03-pm_orig.jpeg"
-                  alt="hello"
-                  style={{
-                    width: '100px',
-                    height: '100px',
-                    borderRadius: '50%',
-                    margin: '0 auto',
-                    float: 'left',
-                  }}
-                />
-                {/*<img
-          src={user.profilePictureUrl}
-          alt={`${user.userName}'s profile picture`}
-          style={{
-            width: '100px',
-            height: '100px',
-            borderRadius: '50%',
-            margin: '0 auto',
-            float: 'left',
-          }}
-        />   this the correct code when get image form back end*/}
+              <Avatar
+      src={editedUser && editedUser.image ? `http://localhost:4000/${editedUser.image}` : null}
+      alt="User profile"
+      style={{
+        width: '100px',
+        height: '100px',
+        borderRadius: '50%',
+        margin: '0 auto',
+        float: 'left',
+        backgroundColor: editedUser && editedUser.image ? null : '#808080',
+      }}
+    >
+      {editedUser && !editedUser.image && <PersonIcon />}
+    </Avatar>
               </Grid>
               <Grid item xs={12} sm={6} md={8} lg={9}>
                 <Typography
@@ -193,7 +223,7 @@ function UserProfileAccEdit({ user }) {
                   lg={9}
                   color="#973535"
                 >
-                  {user.userName}
+                  {editedUser.empID}
                 </Typography>
               </Grid>
             </Grid>
@@ -219,12 +249,12 @@ function UserProfileAccEdit({ user }) {
               
               <Grid item xs={8}>
                 <TextField
-                  label="User Name"
+                  label="Employee ID"
                   fullWidth
                   variant="filled"
-                  value={editedUser.userName}
-                  onChange={(e) => handleFieldChange('userName', e.target.value)}
-                  disabled={editing}
+                  value={editedUser.empID}
+                  onChange={(e) => handleFieldChange('empID', e.target.value)}
+                  disabled={editing||changesSaved}
                   InputLabelProps={{
                     style: { color: '#973535' } 
                   }}
@@ -234,10 +264,10 @@ function UserProfileAccEdit({ user }) {
                             <TextField
                     label="Current Password"
                     fullWidth
-                    type={showPassword.currentPassword ? "text" : "password"}
+                    type={showPassword.oldPassword ? "text" : "password"}
                     variant="filled"
-                    value={editedUser.currentPassword}
-                    onChange={(e) => handleFieldChange('currentPassword', e.target.value)}
+                    value={editedUser.oldPassword}
+                    onChange={(e) => handleFieldChange('oldPassword', e.target.value)}
                     disabled={!editing}
                     InputLabelProps={{
                     style: { color: '#973535' } 
@@ -249,7 +279,7 @@ function UserProfileAccEdit({ user }) {
                             aria-label="toggle password visibility"
                             onClick={() => handlePasswordVisibility('currentPassword')}
                         >
-                            {showPassword.currentPassword ? <Visibility /> : <VisibilityOff />}
+                            {showPassword.oldPassword ? <Visibility /> : <VisibilityOff />}
                         </IconButton>
                         </InputAdornment>
                     ),
