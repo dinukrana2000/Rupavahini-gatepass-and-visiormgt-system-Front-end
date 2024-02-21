@@ -75,6 +75,7 @@ function Staff_login() {
           alert(response.data.error);
         } else {
           if (response.status === 201) {
+            localStorage.setItem('myAppToken', response.data.data);
             alert('Staff Login  successfully!');
             handleClose();
             navigate('/Dailyactivity');
