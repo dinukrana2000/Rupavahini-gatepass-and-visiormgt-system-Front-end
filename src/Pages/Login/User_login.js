@@ -78,6 +78,7 @@ function User_login() {
           alert(response.data.error);
         } else {
           if (response.status === 201) {
+            localStorage.setItem('myAppToken', response.data.data);
             alert('User Login  successfully!');
             handleClose();
             navigate('/userreq');
