@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect  } from 'react';
 import {
   Card,
   CardContent,
@@ -12,29 +12,37 @@ import {
 import Drawer from '../../Components/Drawer/Drawer';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { useNavigate } from 'react-router-dom';
-//import axios from 'axios';
+import axios from 'axios';
+import Avatar from '@mui/material/Avatar';
+import PersonIcon from '@mui/icons-material/Person';
 
 
-
-function UserProfileAcc({ user }) {
+function UserProfileAcc() {
   const [anchorEl, setAnchorEl] = useState(null);
   const navigate = useNavigate();
-
+  const [user, setUser] = useState(null);
  
-  //const [user, setUser] = useState(null);
-  /*useEffect(() => {
+  useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await axios.get('/api/user-profile');
+        const token=localStorage.getItem('myAppToken');
+        const response = await axios.post('http://localhost:4000/userdataheader',null,{
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        
+        });
         setUser(response.data);
+        console.log(response.data);
+  
       } catch (error) {
-        console.error('Error fetching user data:', error);
+        console.error('Error fetching user ', error);
       }
     };
 
     fetchUserData();
-  }, []);   use when get data from back end*/
-
+  }, []);
+  
   
 
   const handleSettingsClick = (event) => {
@@ -59,9 +67,14 @@ function UserProfileAcc({ user }) {
     // Add logic for handling Change Password
   };
 
+  if (!user) {
+    return <div></div>;
+  }
+
   return (
     <>
       <Drawer />
+     
       <Box
         sx={{
           backgroundColor: '#D6C9CF',
@@ -86,28 +99,21 @@ function UserProfileAcc({ user }) {
           <CardContent>
             <Grid container spacing={2} alignItems="center">
               <Grid item xs={12} sm={6} md={4} lg={3}>
-                <img
-                  src="https://eapl15616.weebly.com/uploads/1/4/6/1/146126864/whatsapp-image-2024-01-28-at-4-34-03-pm_orig.jpeg"
-                  alt="hello"
-                  style={{
-                    width: '100px',
-                    height: '100px',
-                    borderRadius: '50%',
-                    margin: '0 auto',
-                    float: 'left',
-                  }}
-                />
-                 {/*<img
-          src={user.profilePictureUrl}
-          alt={`${user.userName}'s profile picture`}
-          style={{
-            width: '100px',
-            height: '100px',
-            borderRadius: '50%',
-            margin: '0 auto',
-            float: 'left',
-          }}
-        />   this the correct code when get image form back end*/}
+             <Avatar
+      src={user && user.data.image ? `http://localhost:4000/${user.data.image}` : null}
+      alt="User profile"
+      style={{
+        width: '100px',
+        height: '100px',
+        borderRadius: '50%',
+        margin: '0 auto',
+        float: 'left',
+        backgroundColor: user && user.data.image ? null : '#808080',
+      }}
+    >
+      {user && !user.data.image && <PersonIcon />}
+    </Avatar>
+                 
               </Grid>
               <Grid item xs={12} sm={6} md={8} lg={9}>
                 <Typography
@@ -119,7 +125,7 @@ function UserProfileAcc({ user }) {
                   lg={9}
                   color="#973535"
                 >
-                  {user.userName}
+                  {user.data.username}
                 </Typography>
               </Grid>
             </Grid>
@@ -149,28 +155,28 @@ function UserProfileAcc({ user }) {
                 <Typography variant="body1" component="p" color="#973535">
                   <b> Full name</b>
                   <br />
-                  <span style={{ color: '#000000' }}>{user.fullName}</span>
+                  <span style={{ color: '#000000' }}>{user.data.fullname}</span>
                 </Typography>
               </Grid>
               <Grid item xs={12}>
                 <Typography variant="body1" component="p" color="#973535">
                   <b> User name</b>
                   <br />
-                  <span style={{ color: '#000000' }}>{user.userName}</span>
+                  <span style={{ color: '#000000' }}>{user.data.username}</span>
                 </Typography>
               </Grid>
               <Grid item xs={12}>
                 <Typography variant="body1" component="p" color="#973535">
                   <b>Email</b>
                   <br />
-                  <span style={{ color: '#000000' }}>{user.email}</span>
+                  <span style={{ color: '#000000' }}>{user.data.email}</span>
                 </Typography>
               </Grid>
               <Grid item xs={12}>
                 <Typography variant="body1" component="p" color="#973535">
                   <b>Contact number</b>
                   <br />
-                  <span style={{ color: '#000000' }}>{user.contactNumber}</span>
+                  <span style={{ color: '#000000' }}>{user.data.contactNo}</span>
                 </Typography>
               </Grid>
             </Grid>
