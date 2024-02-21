@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
@@ -25,6 +25,9 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import PersonIcon from '@mui/icons-material/Person';
+
 
 const drawerWidth = 240;
 
@@ -156,6 +159,28 @@ export default function ResponsiveDrawer({children}) {
   const [open, setOpen] = React.useState(false);
   const [hoveredItem, setHoveredItem] = React.useState(null);
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [user, setUser] = React.useState('');
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const token=localStorage.getItem('myAppToken');
+        const response = await axios.post('http://localhost:4000/userdataheader',null,{
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        
+        });
+        setUser(response.data);
+        console.log(response.data);
+  
+      } catch (error) {
+        console.error('Error fetching user ', error);
+      }
+    };
+
+    fetchUserData();
+  }, []);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -215,11 +240,13 @@ export default function ResponsiveDrawer({children}) {
           <LogoImage src="https://eapl15616.weebly.com/uploads/1/4/6/1/146126864/navbar-logo3-300x42_orig.png" alt="Logo" />
           <AvatarContainer>
             <ResponsiveAvatar
-              src="https://source.unsplash.com/random/32x32"
+              src={user && user.data.image ? `http://localhost:4000/${user.data.image}` : null}
               alt="Avatar"
-              sx={{ cursor: 'pointer' }}
+              sx={{ cursor: 'pointer',
+              backgroundColor: user && user.data.image ? null : '#808080',
+            }}
               onClick={handleMenuOpen}
-            />
+            >{user && !user.data.image && <PersonIcon />}</ResponsiveAvatar>
             <ResponsiveMenu
               anchorEl={anchorEl}
               open={Boolean(anchorEl)}

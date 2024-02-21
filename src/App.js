@@ -31,20 +31,9 @@ import { BrowserRouter , Route, Routes } from 'react-router-dom';
 
 
 function App() {
-  const user = {
-    userName: 'Saman kumara',
-    fullName: 'Saman kumara Ramawikrma',
-    email: 'Saman_kumara@gmail.com',
-    contactNumber: '0713304777',
-  };
 
-  const staff = {
-    employeeID: 'EMP001',
-    userName: 'sunil perera',
-    fullName: 'Sunil perera abcd',
-    email: 'sunilpere@gmail.com',
-    contactNumber: '0714859768',
-  };
+
+
   return (
     <div className="App">
     <BrowserRouter>
@@ -58,17 +47,17 @@ function App() {
       <Route path="/dailyactivity" element={<Dailyactivity/>} />
       <Route path="/forgot" element={<Forgot/>} />
       <Route path="/change" element={<Change/>} />
-      <Route path="/useracc" element={<UserAcc user={user}/>} />
-      <Route path="/useraccedit" element={<UserAccEdit user={user}/>} />
-      <Route path="/useraccpwd" element={<UserAccPwd user={user}/>} />
+      <Route path="/useracc" element={<UserAcc />} />
+      <Route path="/useraccedit" element={<UserAccEdit />} />
+      <Route path="/useraccpwd" element={<UserAccPwd />} />
       <Route path="/visit1" element={<Visit1/>} />
       <Route path="/visit2" element={<Visit2/>} />
       <Route path="/search" element={<Search/>} />
       <Route path="/activity" element={<Activity/>} />
       <Route path="/request" element={<Request/>} />
-      <Route path="/staffacc" element={<StaffAcc user={staff}/>} />
-      <Route path="/staffaccedit" element={<StaffAccEdit user={staff}/>} />
-      <Route path="/staffaccpwd" element={<StaffAccPwd user={staff}/>} />
+      <Route path="/staffacc" element={<StaffAcc />} />
+      <Route path="/staffaccedit" element={<StaffAccEdit />} />
+      <Route path="/staffaccpwd" element={<StaffAccPwd />} />
   
       <Route path="/staffcomplain" element={<StaffComplain/>} />
       <Route path="/staffreq" element={<Staff_req/>} />
