@@ -277,7 +277,7 @@ function UserProfileAccEdit() {
                         <InputAdornment position="end">
                         <IconButton
                             aria-label="toggle password visibility"
-                            onClick={() => handlePasswordVisibility('currentPassword')}
+                            onClick={() => handlePasswordVisibility('oldPassword')}
                         >
                             {showPassword.oldPassword ? <Visibility /> : <VisibilityOff />}
                         </IconButton>
