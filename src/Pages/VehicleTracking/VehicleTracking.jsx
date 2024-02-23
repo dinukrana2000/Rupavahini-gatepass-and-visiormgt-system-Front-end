@@ -32,6 +32,7 @@ import {
   GridToolbarContainer,
   GridActionsCellItem,
   GridRowEditStopReasons,
+  GridToolbar,
 } from "@mui/x-data-grid";
 import {
   randomCreatedDate,
@@ -75,13 +76,11 @@ const randomRole = () => {
   return randomArrayItem(roles);
 };
 
-const initialRows = [];
-
 const VehicleTracking = () => {
   const [disabled, setDisabled] = useState(true);
   const [tableData, setTableData] = useState({
     vehicleNo: "",
-    time: "",
+    time: new Date(),
     inOut: "",
   });
   const handleAddNew = () => {
@@ -93,6 +92,7 @@ const VehicleTracking = () => {
     setVisitedFields({ ...visitedFields, [fieldName]: true });
   };
   const [fetchedData, setFetchedData] = useState([]);
+  const initialRows = fetchedData;
   const fetchDataFromDatabase = () => {
     // Fetch data from the database
     axios
@@ -151,6 +151,7 @@ const VehicleTracking = () => {
   };
   const [rows, setRows] = useState(initialRows);
   const [rowModesModel, setRowModesModel] = useState({});
+
   const [formData, setFormData] = useState({});
 
   const handleRowEditStop = (params, event) => {
@@ -197,7 +198,7 @@ const VehicleTracking = () => {
     {
       field: "vehicleNo",
       headerName: "Vehicle No",
-      width: 180,
+      width: 200,
       editable: true,
     },
 
@@ -205,13 +206,13 @@ const VehicleTracking = () => {
       field: "time",
       headerName: "Time",
       type: "time",
-      width: 180,
+      width: 200,
       editable: true,
     },
     {
-      field: "role",
-      headerName: "Department",
-      width: 220,
+      field: "inOut",
+      headerName: "In/Out",
+      width: 200,
       editable: true,
       type: "singleSelect",
       valueOptions: ["In", "Out"],
@@ -307,7 +308,7 @@ const VehicleTracking = () => {
                 </Button>
               </Grid>
 
-              <Grid container spacing={2} style={{ padding: "5vh" }}>
+              <Grid container spacing={2} style={{ padding: "2vh" }}>
                 <Grid item xs={4}>
                   <div>Vehicle No</div>
                   <TextField
@@ -327,8 +328,8 @@ const VehicleTracking = () => {
                     name="time"
                     value={tableData.time}
                     handleTimeChange={(time) => handleTimeChange(time)}
-                    onFocus={() => handleFieldVisited("time")}
-                    onBlur={() => handleFieldVisited("time")}
+                    // onFocus={() => handleFieldVisited("time")}
+                    // onBlur={() => handleFieldVisited("time")}
                     disabled={disabled}
                   ></BasicTimePicker>
                 </Grid>
@@ -364,7 +365,7 @@ const VehicleTracking = () => {
             <Box
               sx={{
                 height: "40vh",
-                width: "100%",
+                width: "100vh",
                 "& .actions": {
                   color: "text.secondary",
                 },
@@ -374,6 +375,9 @@ const VehicleTracking = () => {
               }}
             >
               <DataGrid
+                disableColumnFilter
+                disableColumnSelector
+                disableDensitySelector
                 rows={rows}
                 columns={columns}
                 editMode="row"
@@ -381,6 +385,12 @@ const VehicleTracking = () => {
                 onRowModesModelChange={handleRowModesModelChange}
                 onRowEditStop={handleRowEditStop}
                 processRowUpdate={processRowUpdate}
+                slots={{ toolbar: GridToolbar }}
+                slotProps={{
+                  toolbar: {
+                    showQuickFilter: true,
+                  },
+                }}
               />
             </Box>
           </StyledPaper>

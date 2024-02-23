@@ -5,7 +5,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 
-const BasicTimePicker = ({ id, value, handleTimeChange }, props) => {
+const BasicTimePicker = ({ id, value, handleTimeChange, disabled }, props) => {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DemoContainer components={["TimePicker"]}>
@@ -14,6 +14,7 @@ const BasicTimePicker = ({ id, value, handleTimeChange }, props) => {
           id={id}
           value={dayjs(value)}
           onChange={handleTimeChange}
+          disabled={disabled}
         />
       </DemoContainer>
     </LocalizationProvider>
