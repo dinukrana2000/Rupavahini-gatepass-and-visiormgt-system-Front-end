@@ -2,8 +2,8 @@ import React from 'react';
 import Home from './Pages/Home/Home';
 import User_Login from './Pages/Login/User_login';
 import Staff_Login from './Pages/Login/Staff_Login';
-import Usersignup from './Pages/signup/Usersignup';
-import Staffsignup from './Pages/signup/Staffsignup';
+import Usersignup from './Pages/signup/usersignup';
+import Staffsignup from './Pages/signup/staffsignup';
 import UserReq from './Pages/UserRequestHome/UserReq';
 import Dailyactivity from './Pages/Dailyactivity/Dailyactivity';
 import Forgot from './Pages/Password/Forgot_Pwd';
@@ -21,6 +21,7 @@ import Search from './Pages/Historysearch/staffpagehistory-searchday';
 import Activity from './Pages/staffpagehistory-activity-view/Activity';
 import Request from './Pages/Request/Request'; 
 import Staff_req from './Pages/Staffrequest/Staff_req';
+import Sec_Visit from './Pages/Sec_Visit/Visit_Rup';
  
 import { BrowserRouter , Route, Routes } from 'react-router-dom';
 
@@ -72,6 +73,7 @@ function App() {
   
       <Route path="/staffcomplain" element={<StaffComplain/>} />
       <Route path="/staffreq" element={<Staff_req/>} />
+      <Route path='/secvisit' element={<Sec_Visit/>} />
       </Routes>
   </BrowserRouter>
 
