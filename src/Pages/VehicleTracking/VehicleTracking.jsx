@@ -39,18 +39,19 @@ import {
   randomId,
   randomArrayItem,
 } from "@mui/x-data-grid-generator";
+import ResponsiveDrawer from "../../Components/Drawer/Drawer";
 
 const StyledContainer = styled(Container)({
   height: "auto",
   //display: "flex",
-  marginTop: "5vh",
+  marginTop: "10vh",
   justifyContent: "center",
   alignItems: "center",
   //width: "100vh",
 });
 
 const StyledPaper = styled(Paper)({
-  padding: "30px",
+  padding: "2vh",
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
@@ -264,123 +265,127 @@ const VehicleTracking = () => {
   ];
 
   return (
-    <Box
-      sx={{
-        backgroundImage: `url(${image})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        // display: "flex",
-        position: "absolute",
-        top: 0,
-        bottom: 0,
-        left: 0,
-        right: 0,
-        height: "auto",
-        maxWidth: "100%",
-      }}
-    >
-      <StyledContainer>
-        <StyledPaper elevation={3}>
-          <form style={useStyles.form} onSubmit={handleSubmit}>
-            <Grid container spacing={2} style={useStyles.section}>
-              <Grid item xs={6} display="flex" justifyContent="center">
-                <Typography variant="h6">Vehicle Tracking</Typography>
+    <Box>
+      <ResponsiveDrawer />
+      <Box
+        sx={{
+          backgroundImage: `url(${image})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          // display: "flex",
+          position: "absolute",
+          top: 0,
+          bottom: 0,
+          left: 0,
+          right: 0,
+          height: "auto",
+          maxWidth: "100%",
+        }}
+      >
+        <StyledContainer>
+          <StyledPaper elevation={3}>
+            <form style={useStyles.form} onSubmit={handleSubmit}>
+              <Grid container spacing={2} style={useStyles.section}>
+                <Grid item xs={6} display="flex" justifyContent="center">
+                  <Typography variant="h6">Vehicle Tracking</Typography>
+                </Grid>
+                <Grid item xs={6} display="flex" justifyContent="center">
+                  <BasicDatePicker></BasicDatePicker>
+                </Grid>
               </Grid>
-              <Grid item xs={6} display="flex" justifyContent="center">
-                <BasicDatePicker></BasicDatePicker>
-              </Grid>
-            </Grid>
 
-            <Grid>
-              <Button
-                fullWidth
-                type="submit"
-                variant="contained"
-                color="primary"
-                style={useStyles.section}
-                onClick={handleAddNew}
-              >
-                ADD NEW
-              </Button>
-            </Grid>
+              <Grid>
+                <Button
+                  fullWidth
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  style={useStyles.section}
+                  onClick={handleAddNew}
+                >
+                  ADD NEW
+                </Button>
+              </Grid>
 
-            <Grid container spacing={2}>
-              <Grid item xs={3}>
-                <div>Vehicle No</div>
-                <TextField
-                  variant="outlined"
-                  id="vehicleNo"
-                  name="vehicleNo"
-                  value={tableData.vehicleNo}
-                  onChange={(e) => handleInputChange(e)}
-                  disabled={disabled}
-                ></TextField>
-              </Grid>
-              <Grid item xs={3}>
-                <div>Time</div>
-                <BasicTimePicker
-                  id="time"
-                  name="time"
-                  value={tableData.time}
-                  handleTimeChange={(time) => handleTimeChange(time)}
-                  onFocus={() => handleFieldVisited("time")}
-                  onBlur={() => handleFieldVisited("time")}
-                  disabled={disabled}
-                ></BasicTimePicker>
-              </Grid>
-              <Grid item xs={3}>
-                <div>In/Out</div>
-                <FormControl>
-                  <InputLabel>In/Out</InputLabel>
-                  <Select
-                    style={{ minWidth: "10rem" }}
-                    labelId="inOut"
-                    id="inOut"
-                    name="inOut"
-                    label="In/Out"
-                    value={tableData.inOut}
+              <Grid container spacing={2} style={{ padding: "5vh" }}>
+                <Grid item xs={4}>
+                  <div>Vehicle No</div>
+                  <TextField
+                    variant="outlined"
+                    id="vehicleNo"
+                    name="vehicleNo"
+                    value={tableData.vehicleNo}
+                    style={{ marginTop: "1vh", minWidth: "15rem" }}
                     onChange={(e) => handleInputChange(e)}
                     disabled={disabled}
-                  >
-                    <MenuItem value="in">In</MenuItem>
-                    <MenuItem value="out">Out</MenuItem>
-                  </Select>
-                </FormControl>
+                  ></TextField>
+                </Grid>
+                <Grid item xs={4}>
+                  <div>Time</div>
+                  <BasicTimePicker
+                    id="time"
+                    name="time"
+                    value={tableData.time}
+                    handleTimeChange={(time) => handleTimeChange(time)}
+                    onFocus={() => handleFieldVisited("time")}
+                    onBlur={() => handleFieldVisited("time")}
+                    disabled={disabled}
+                  ></BasicTimePicker>
+                </Grid>
+                <Grid item xs={3}>
+                  <div>In/Out</div>
+                  <FormControl style={{ marginTop: "1vh" }}>
+                    <Select
+                      style={{ minWidth: "10rem" }}
+                      id="inOut"
+                      name="inOut"
+                      value={tableData.inOut}
+                      onChange={(e) => handleInputChange(e)}
+                      disabled={disabled}
+                    >
+                      <MenuItem value="in">In</MenuItem>
+                      <MenuItem value="out">Out</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid item xs={1}>
+                  <div>
+                    <Button
+                      type="submit"
+                      onClick={handleSubmit}
+                      style={{ marginTop: "4vh" }}
+                    >
+                      Enter
+                    </Button>
+                  </div>
+                </Grid>
               </Grid>
-              <Grid item xs={3}>
-                <div></div>
-                <div>
-                  <Button type="submit" onClick={handleSubmit}>
-                    Enter
-                  </Button>
-                </div>
-              </Grid>
-            </Grid>
-          </form>
-          <Box
-            sx={{
-              height: "40vh",
-              width: "100%",
-              "& .actions": {
-                color: "text.secondary",
-              },
-              "& .textPrimary": {
-                color: "text.primary",
-              },
-            }}
-          >
-            <DataGrid
-              rows={rows}
-              columns={columns}
-              editMode="row"
-              rowModesModel={rowModesModel}
-              onRowModesModelChange={handleRowModesModelChange}
-              onRowEditStop={handleRowEditStop}
-              processRowUpdate={processRowUpdate}
-            />
-          </Box>
-        </StyledPaper>
-      </StyledContainer>
+            </form>
+            <Box
+              sx={{
+                height: "40vh",
+                width: "100%",
+                "& .actions": {
+                  color: "text.secondary",
+                },
+                "& .textPrimary": {
+                  color: "text.primary",
+                },
+              }}
+            >
+              <DataGrid
+                rows={rows}
+                columns={columns}
+                editMode="row"
+                rowModesModel={rowModesModel}
+                onRowModesModelChange={handleRowModesModelChange}
+                onRowEditStop={handleRowEditStop}
+                processRowUpdate={processRowUpdate}
+              />
+            </Box>
+          </StyledPaper>
+        </StyledContainer>
+      </Box>
     </Box>
   );
 };
