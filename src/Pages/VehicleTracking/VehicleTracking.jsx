@@ -353,6 +353,8 @@ const VehicleTracking = () => {
                   <div>
                     <Button
                       type="submit"
+                      variant="contained"
+                      color="primary"
                       onClick={handleSubmit}
                       style={{ marginTop: "4vh" }}
                     >
@@ -393,6 +395,15 @@ const VehicleTracking = () => {
                 }}
               />
             </Box>
+            <Grid>
+              <Button
+                style={{ marginTop: "1vh" }}
+                variant="contained"
+                color="primary"
+              >
+                Back
+              </Button>
+            </Grid>
           </StyledPaper>
         </StyledContainer>
       </Box>
