@@ -300,8 +300,7 @@ const VehicleTracking = () => {
                   fullWidth
                   type="submit"
                   variant="contained"
-                  color="primary"
-                  style={useStyles.section}
+                  style={{ ...useStyles.section, backgroundColor: "#973535" }}
                   onClick={handleAddNew}
                 >
                   ADD NEW
@@ -354,9 +353,8 @@ const VehicleTracking = () => {
                     <Button
                       type="submit"
                       variant="contained"
-                      color="primary"
                       onClick={handleSubmit}
-                      style={{ marginTop: "4vh" }}
+                      style={{ marginTop: "4vh", backgroundColor: "#973535" }}
                     >
                       Enter
                     </Button>
@@ -397,9 +395,8 @@ const VehicleTracking = () => {
             </Box>
             <Grid>
               <Button
-                style={{ marginTop: "1vh" }}
+                style={{ marginTop: "1vh", backgroundColor: "#973535" }}
                 variant="contained"
-                color="primary"
               >
                 Back
               </Button>
