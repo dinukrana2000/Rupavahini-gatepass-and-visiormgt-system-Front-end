@@ -64,7 +64,7 @@ function App() {
           <Route path="/staffacc" element={<StaffAcc user={staff} />} />
           <Route path="/staffaccedit" element={<StaffAccEdit user={staff} />} />
           <Route path="/staffaccpwd" element={<StaffAccPwd user={staff} />} />
-          <Route path="/vehicaltraking" element={<VehicleTracking />} />
+          <Route path="/vehicletracking" element={<VehicleTracking />} />
           <Route path="/staffcomplain" element={<StaffComplain />} />
           <Route path="/staffreq" element={<Staff_req />} />
         </Routes>

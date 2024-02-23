@@ -19,6 +19,7 @@ import {
   TableBody,
 } from "@mui/material";
 import { border, color, styled } from "@mui/system";
+import { useFormik } from "formik";
 import BasicDatePicker from "../../Components/datepicker/datepicker";
 import axios, { Axios } from "axios";
 import BasicTimePicker from "../../Components/timepicker/timepicker";
@@ -91,8 +92,53 @@ const VehicleTracking = () => {
   const handleFieldVisited = (fieldName) => {
     setVisitedFields({ ...visitedFields, [fieldName]: true });
   };
+
+  const formik = useFormik({
+    initialValues: tableData,
+
+    onSubmit: (values) => {
+      console.log("form data", values);
+      // values.preventDefault();
+      // try {
+      //   // Send data to the database
+      //   // const response = await axios.post("your-api-endpoint", tableData);
+      //   // console.log("Data successfully sent to the database:", response.data);
+      //   console.log("submitted");
+
+      //   // Reset the form
+      //   setTableData({
+      //     vehicleNo: "",
+      //     time: "",
+      //     inOut: "",
+      //   });
+      //   setDisabled(true);
+      // } catch (error) {
+      //   console.error("Error submitting data to the database:", error);
+      // }
+    },
+    validate: (values) => {
+      let errors = {};
+
+      if (!values.vehicleNo) {
+        errors.vehicleNo = "Required";
+      }
+      if (!values.time) {
+        errors.time = "Required";
+      }
+      if (!values.inOut) {
+        errors.inOut = "Required";
+      }
+
+      return errors;
+    },
+  });
+
+  console.log("form values", formik.errors);
+
   const [fetchedData, setFetchedData] = useState([]);
+
   const initialRows = fetchedData;
+
   const fetchDataFromDatabase = () => {
     // Fetch data from the database
     axios
@@ -108,47 +154,14 @@ const VehicleTracking = () => {
   useEffect(() => {
     fetchDataFromDatabase();
   }, []);
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      // Send data to the database
-      const response = await axios.post("your-api-endpoint", tableData);
-      console.log("Data successfully sent to the database:", response.data);
-      //console.log("submitted");
-
-      // Reset the form
-      setTableData({
-        vehicleNo: "",
-        time: "",
-        inOut: "",
-      });
-      setDisabled(true);
-    } catch (error) {
-      console.error("Error submitting data to the database:", error);
-    }
-  };
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setTableData((prevFormData) => ({
-      ...prevFormData,
-      [name]: value,
-    }));
-    // setValidationErrors((prevErrors) => ({
-    //   ...prevErrors,
-    //   [name]: "",
-    // }));
-  };
 
   const handleTimeChange = (time) => {
-    setTableData((prevFormData) => ({
-      ...prevFormData,
-      time: time,
-    }));
-    // setValidationErrors((prevErrors) => ({
-    //   ...prevErrors,
-    //   time: "",
-    // }));
+    //formik.setFieldValue("time", time);
+    const formattedTime = time.format("HH:mm"); // Format time
+    formik.setFieldValue("time", formattedTime); // Set the formatted time value
+    formik.setFieldTouched("time", true, false);
   };
+
   const [rows, setRows] = useState(initialRows);
   const [rowModesModel, setRowModesModel] = useState({});
 
@@ -285,7 +298,7 @@ const VehicleTracking = () => {
       >
         <StyledContainer>
           <StyledPaper elevation={3}>
-            <form style={useStyles.form} onSubmit={handleSubmit}>
+            <form style={useStyles.form} onSubmit={formik.handleSubmit}>
               <Grid container spacing={2} style={useStyles.section}>
                 <Grid item xs={6} display="flex" justifyContent="center">
                   <Typography variant="h6">Vehicle Tracking</Typography>
@@ -314,9 +327,9 @@ const VehicleTracking = () => {
                     variant="outlined"
                     id="vehicleNo"
                     name="vehicleNo"
-                    value={tableData.vehicleNo}
+                    value={formik.values.vehicleNo}
                     style={{ marginTop: "1vh", minWidth: "15rem" }}
-                    onChange={(e) => handleInputChange(e)}
+                    onChange={formik.handleChange}
                     disabled={disabled}
                   ></TextField>
                 </Grid>
@@ -325,8 +338,8 @@ const VehicleTracking = () => {
                   <BasicTimePicker
                     id="time"
                     name="time"
-                    value={tableData.time}
-                    handleTimeChange={(time) => handleTimeChange(time)}
+                    value={formik.values.time}
+                    handleTimeChange={handleTimeChange}
                     // onFocus={() => handleFieldVisited("time")}
                     // onBlur={() => handleFieldVisited("time")}
                     disabled={disabled}
@@ -339,8 +352,8 @@ const VehicleTracking = () => {
                       style={{ minWidth: "10rem" }}
                       id="inOut"
                       name="inOut"
-                      value={tableData.inOut}
-                      onChange={(e) => handleInputChange(e)}
+                      value={formik.values.inOut}
+                      onChange={formik.handleChange}
                       disabled={disabled}
                     >
                       <MenuItem value="in">In</MenuItem>
@@ -353,7 +366,7 @@ const VehicleTracking = () => {
                     <Button
                       type="submit"
                       variant="contained"
-                      onClick={handleSubmit}
+                      // onClick={handleSubmit}
                       style={{ marginTop: "4vh", backgroundColor: "#973535" }}
                     >
                       Enter
