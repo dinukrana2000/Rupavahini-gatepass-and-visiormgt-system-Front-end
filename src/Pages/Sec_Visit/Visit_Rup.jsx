@@ -6,7 +6,7 @@ import MuiAccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import Drawer from '../../Components/Drawer/Drawer';
 import React, { useState } from 'react';
-import { Button, Grid, TextField } from '@mui/material';
+import { Button, Grid, Select, TextField, InputLabel, MenuItem, FormControl } from '@mui/material';
 
 const BackgroundImg = styled('div') ({
     backgroundImage: 'url("https://assets-eu-01.kc-usercontent.com/77bbf83a-1306-0152-fea5-3b5eaf937634/7916661a-40c3-4d65-8ea8-6785dfe41ab8/GettyImages-1303567646.jpg")',
@@ -26,7 +26,7 @@ const Container = styled('div') ({
     margin: '5%',
     padding: '2%',
     backgroundColor: 'rgb(255, 255, 255, 0.5)',
-    width: '900px',
+    width: '800px',
     height: 'auto',
     alignItems: 'center',
 
@@ -35,7 +35,7 @@ const Container = styled('div') ({
 const Accordion = styled((props) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />
 ))(({ theme }) => ({
-  padding: '1%',
+  margin: '1%',
   border: `${theme.palette.divider}`,
   '&:not(:last-child)': {
     borderBottom: 0,
@@ -47,17 +47,19 @@ const Accordion = styled((props) => (
 
 const AccordionSummary = styled((props) => (
   <MuiAccordionSummary
-    expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: '0.9rem' }} />}
+    expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: '0.9rem', color: 'white'}} />}
     {...props}
   />
 ))(({ theme }) => ({
   background: '#973535',
+  color: 'white',
     // theme.palette.mode === 'dark'
     //   ? 'rgba(255, 255, 255, .05)'
     //   : 'rgba(0, 0, 0, .03)',
   flexDirection: 'row-reverse',
   '& .MuiAccordionSummary-expandIconWrapper.Mui-expanded': {
     transform: 'rotate(90deg)',
+    
   },
   '& .MuiAccordionSummary-content': {
     marginLeft: theme.spacing(1),
@@ -67,15 +69,38 @@ const AccordionSummary = styled((props) => (
 const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
   padding: theme.spacing(2),
   // borderTop: '1px solid rgba(0, 0, 0, .125)',
-  backgroundColor: '#808080',
   // backdropFilter: 'blur(50px)', 
 }));
 
 function Visit_Rup() {
   const [expanded, setExpanded] = useState(false);
+  const [showAdditionalTypography, setShowAdditionalTypography] = useState(false);
 
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
+  };
+
+  const [In_Out, setIn_Out] = useState('');
+  const [timeValue, setTimeValue] = useState('');
+
+  const handleChangeInOut = (event) => {
+    setIn_Out(event.target.value);
+  };
+
+  const handleChangeTime = (event) => {
+    setTimeValue(event.target.value);
+  };
+
+  const handleEnterClick = () => {
+    setTimeValue('');
+    setIn_Out('');
+
+    console.log('Time: ', timeValue);
+    console.log('In/Out: ', In_Out)
+  };
+
+  const handleButtonClick = () => {
+    setShowAdditionalTypography(!showAdditionalTypography);
   };
 
 
@@ -86,15 +111,10 @@ function Visit_Rup() {
       <Container>
         <h2><u>Visit Rupavahini</u></h2>
         
-        <Grid container spacing={2} >
-
-          <Grid style={{width:"100%", padding:"1%",margin:"2%", background:"#fff"}}>
-          <ul>
-            <li><b>Royal Collage</b></li>
-          </ul>
+        <Grid width={"100%"} >
               <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
               <AccordionSummary aria-controls='panel1d-content' id='panel1d-header'>
-                <Typography>View Details</Typography>
+                <Typography><b>Royal College</b></Typography>
               </AccordionSummary>
               <AccordionDetails>
                   <Typography>
@@ -103,32 +123,52 @@ function Visit_Rup() {
                     No of Students: <br/>
                     Address: <br/>
                   </Typography>
+                  <hr/>
+                  <Grid container justifyContent="center" paddingBottom={'2%'}>
+                  <Button variant='contained' onClick={handleButtonClick} style={{ backgroundColor: '#973535'}}>Update</Button>
+                  </Grid>
+
+                  {showAdditionalTypography && (
+
+                    <Grid backgroundColor={'#D6C9CA'} padding={'2%'}>
+
+                    <Grid container spacing={1}>
+                      <Grid item xs={12} sm={4} justifyContent={'center'}>
+                        <TextField id='time' label='Time' type='time' variant='standard' size='small'focused value={timeValue} onChange={handleChangeTime}/>
+                      </Grid>
+                      <Grid item xs={12} sm={3}>
+                            <FormControl size="small" fullWidth>
+                              <InputLabel id="demo-simple-select-label">In/Out</InputLabel>
+                              <Select
+                                labelId="demo-simple-select-label"
+                                id="demo-simple-select"
+                                value={In_Out}
+                                label="In/Out"
+                                onChange={handleChangeInOut} >
+
+                                  <MenuItem value={10}>In</MenuItem>
+                                  <MenuItem value={20}>Out</MenuItem>
+
+                              </Select>
+                            </FormControl>
+                      </Grid>
+                      <Grid item xs={12} sm={4} style={{ textAlign: 'right' }}>
+                        <Button variant='outlined' onClick={handleEnterClick} >Enter</Button>
+                      </Grid>
+                    </Grid>
+                    
+                    </Grid> 
+                  )}
+
               </AccordionDetails>
            </Accordion>
-           <Accordion expanded={expanded === 'panel11'} onChange={handleChange('panel11')}>
-              <AccordionSummary aria-controls='panel11d-content' id='panel11d-header'>
-                <Typography>Update</Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                  <Typography>
-                    <TextField id='time' label='time' variant='standard' />
-                  </Typography>
-              </AccordionDetails>
-           </Accordion>
+      
           </Grid>
 
-          {/* <Grid item xs={12} sm={6}> */}
-           
-          {/* </Grid> */}
-
-      {/* <Grid item xs={12} sm={3}> */}
-      {/*  */}
-      {/* </Grid> */}
-
-      {/* <Grid item xs={12} sm={3}> */}
-      {/* <Accordion expanded={expanded === 'panel12'} onChange={handleChange('panel12')}>
+          <Grid width={"100%"} >
+              <Accordion expanded={expanded === 'panel12'} onChange={handleChange('panel12')}>
               <AccordionSummary aria-controls='panel12d-content' id='panel12d-header'>
-                <Typography>View</Typography>
+                <Typography><b>Royal College</b></Typography>
               </AccordionSummary>
               <AccordionDetails>
                   <Typography>
@@ -137,28 +177,51 @@ function Visit_Rup() {
                     No of Students: <br/>
                     Address: <br/>
                   </Typography>
+                  <hr/>
+                  <Grid container justifyContent="center" paddingBottom={'2%'}>
+                  <Button variant='contained' onClick={handleButtonClick} style={{ backgroundColor: '#973535'}}>Update</Button>
+                  </Grid>
+
+                  {showAdditionalTypography && (
+
+                    <Grid backgroundColor={'#D6C9CA'} padding={'2%'}>
+
+                    <Typography>
+                    <Grid container spacing={1}>
+                      <Grid item xs={12} sm={4}>
+                        <TextField id='time' label='Time' type='time' variant='standard' size='small' focused fullWidth/>
+                      </Grid>
+                      <Grid item xs={12} sm={4}>
+                            <FormControl size="small" fullWidth>
+                              <InputLabel id="demo-simple-select-label">In/Out</InputLabel>
+                              <Select
+                                labelId="demo-simple-select-label"
+                                id="demo-simple-select"
+                                value={In_Out}
+                                label="In/Out"
+                                onChange={handleChangeInOut} >
+
+                                  <MenuItem value={10}>In</MenuItem>
+                                  <MenuItem value={20}>Out</MenuItem>
+
+                              </Select>
+                            </FormControl>
+                      </Grid>
+                      <Grid item xs={12} sm={4}>
+                        <Button variant='outlined'  >Enter</Button>
+                      </Grid>
+                    </Grid>
+                      
+                    </Typography>
+
+                    </Grid> 
+                  )}
+
               </AccordionDetails>
-           </Accordion> */}
-      {/* </Grid> */}
+           </Accordion>
+      
+          </Grid>
 
-      </Grid>
-    
-
-        {/* <div style={{width:"100%"}}>
-        <Accordion expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
-          <AccordionSummary aria-controls='panel2d-content' id='panel2d-header'>
-            <Typography>Royal College</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Typography>
-              School Name : <br/>
-              Grade: <br/>
-              No of Students: <br/>
-              Address: <br/>
-            </Typography>
-          </AccordionDetails>
-        </Accordion>
-        </div> */}
       </Container>
     </BackgroundImg>
     </>
