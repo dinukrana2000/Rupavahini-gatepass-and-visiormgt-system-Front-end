@@ -6,20 +6,15 @@ import {
   Paper,
   Grid,
   Typography,
-  InputLabel,
   FormControl,
   TextField,
   Select,
   MenuItem,
   Button,
-  TableHead,
-  TableRow,
-  TableCell,
-  Table,
-  TableBody,
 } from "@mui/material";
-import { border, color, styled } from "@mui/system";
+import { styled } from "@mui/system";
 import { useFormik } from "formik";
+import * as Yup from "yup";
 import BasicDatePicker from "../../Components/datepicker/datepicker";
 import axios, { Axios } from "axios";
 import BasicTimePicker from "../../Components/timepicker/timepicker";
@@ -78,14 +73,14 @@ const randomRole = () => {
 };
 
 const VehicleTracking = () => {
-  const [disabled, setDisabled] = useState(true);
+  const [showForm, setShowForm] = useState(false);
   const [tableData, setTableData] = useState({
     vehicleNo: "",
     time: new Date(),
     inOut: "",
   });
   const handleAddNew = () => {
-    setDisabled(false);
+    setShowForm(true);
   };
   const [visitedFields, setVisitedFields] = useState({});
 
@@ -98,57 +93,39 @@ const VehicleTracking = () => {
 
     onSubmit: (values) => {
       console.log("form data", values);
-      // values.preventDefault();
-      // try {
-      //   // Send data to the database
-      //   // const response = await axios.post("your-api-endpoint", tableData);
-      //   // console.log("Data successfully sent to the database:", response.data);
-      //   console.log("submitted");
-
-      //   // Reset the form
-      //   setTableData({
-      //     vehicleNo: "",
-      //     time: "",
-      //     inOut: "",
-      //   });
-      //   setDisabled(true);
-      // } catch (error) {
-      //   console.error("Error submitting data to the database:", error);
-      // }
+      values.preventDefault();
+      addDataToTable(values)
+        .then((response) => {
+          console.log(response);
+          setShowForm(false);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      setTableData({ vehicleNo: "", time: "", inOut: "" });
     },
-    validate: (values) => {
-      let errors = {};
 
-      if (!values.vehicleNo) {
-        errors.vehicleNo = "Required";
-      }
-      if (!values.time) {
-        errors.time = "Required";
-      }
-      if (!values.inOut) {
-        errors.inOut = "Required";
-      }
-
-      return errors;
-    },
+    validationSchema: Yup.object({
+      vehicleNo: Yup.string().trim().required("Required!"),
+      inOut: Yup.string().trim().required("Required!"),
+    }),
   });
 
-  console.log("form values", formik.errors);
+  console.log("form valuesaaaa", formik.touched);
 
   const [fetchedData, setFetchedData] = useState([]);
 
   const initialRows = fetchedData;
 
   const fetchDataFromDatabase = () => {
-    // Fetch data from the database
-    axios
-      .get("your-api-endpoint")
-      .then((response) => {
-        setFetchedData(response.data);
+    getVehicalDetails()
+      .then((vehicalDetails) => {
+        setFetchedData(vehicalDetails);
       })
       .catch((error) => {
-        console.error("Error fetching data from the database:", error);
+        console.log(error);
       });
+    // Fetch data from the database
   };
 
   useEffect(() => {
@@ -156,10 +133,10 @@ const VehicleTracking = () => {
   }, []);
 
   const handleTimeChange = (time) => {
-    //formik.setFieldValue("time", time);
-    const formattedTime = time.format("HH:mm"); // Format time
-    formik.setFieldValue("time", formattedTime); // Set the formatted time value
-    formik.setFieldTouched("time", true, false);
+    formik.setFieldValue("time", time);
+    // const formattedTime = time.format("HH:mm"); // Format time
+    // formik.setFieldValue("time", formattedTime); // Set the formatted time value
+    //formik.setFieldTouched("time", true, false);
   };
 
   const [rows, setRows] = useState(initialRows);
@@ -177,12 +154,27 @@ const VehicleTracking = () => {
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
   };
 
-  const handleSaveClick = (id) => () => {
+  const handleSaveClick = (id, values) => () => {
+    console.log(values);
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
+    updateRowFromTable(id, values)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const handleDeleteClick = (id) => () => {
     setRows(rows.filter((row) => row.id !== id));
+    deleteRowFromTable(id)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const handleCancelClick = (id) => () => {
@@ -207,12 +199,81 @@ const VehicleTracking = () => {
     setRowModesModel(newRowModesModel);
   };
 
+  //connecting to the backend
+  async function getVehicalDetails() {
+    let vehicalDetails = [];
+
+    try {
+      const response = await axios.get(
+        `http://localhost:4000//vehicle/tracking/`
+      );
+
+      response?.data?.forEach((vehicalDetail) => {
+        vehicalDetails.push({
+          vehicleNo: vehicalDetail.vehicleNo,
+          inOut: vehicalDetail.inOut,
+          time: vehicalDetail.time,
+        });
+      });
+    } catch (error) {
+      console.log(error);
+    }
+
+    return vehicalDetails;
+  }
+
+  async function addDataToTable(values) {
+    try {
+      const response = await axios.post(
+        `http://localhost:4000//vehicle/tracking`,
+        values
+      );
+    } catch (error) {
+      console.error("Error!", error);
+    }
+  }
+
+  async function updateRowFromTable(id, values) {
+    let response = null;
+    try {
+      response = await axios.put(
+        `http://localhost:4000//vehicle/tracking/${id}`,
+        values
+      );
+    } catch (error) {
+      console.log(error);
+    }
+
+    return response;
+  }
+
+  async function deleteRowFromTable(id) {
+    let response = null;
+    try {
+      response = await axios.delete(
+        `http://localhost:4000//vehicle/tracking/${id}`
+      );
+    } catch (error) {
+      console.log(error);
+    }
+    return response;
+  }
+
   const columns = [
+    {
+      field: "id",
+      headerName: "id",
+      width: 70,
+      editable: true,
+      headerClassName: "custom-header",
+    },
+
     {
       field: "vehicleNo",
       headerName: "Vehicle No",
       width: 200,
       editable: true,
+      headerClassName: "custom-header",
     },
 
     {
@@ -221,14 +282,16 @@ const VehicleTracking = () => {
       type: "time",
       width: 200,
       editable: true,
+      headerClassName: "custom-header",
     },
     {
       field: "inOut",
       headerName: "In/Out",
-      width: 200,
+      width: 150,
       editable: true,
       type: "singleSelect",
       valueOptions: ["In", "Out"],
+      headerClassName: "custom-header",
     },
     {
       field: "actions",
@@ -236,7 +299,7 @@ const VehicleTracking = () => {
       headerName: "Actions",
       width: 100,
       cellClassName: "actions",
-      getActions: ({ id }) => {
+      getActions: ({ id, params }) => {
         const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
 
         if (isInEditMode) {
@@ -247,7 +310,7 @@ const VehicleTracking = () => {
               sx={{
                 color: "primary.main",
               }}
-              onClick={handleSaveClick(id)}
+              onClick={handleSaveClick(id, params.row)}
             />,
             <GridActionsCellItem
               icon={<CancelIcon />}
@@ -275,6 +338,7 @@ const VehicleTracking = () => {
           />,
         ];
       },
+      headerClassName: "custom-header",
     },
   ];
 
@@ -311,7 +375,6 @@ const VehicleTracking = () => {
               <Grid>
                 <Button
                   fullWidth
-                  type="submit"
                   variant="contained"
                   style={{ ...useStyles.section, backgroundColor: "#973535" }}
                   onClick={handleAddNew}
@@ -319,71 +382,87 @@ const VehicleTracking = () => {
                   ADD NEW
                 </Button>
               </Grid>
-
-              <Grid container spacing={2} style={{ padding: "2vh" }}>
-                <Grid item xs={4}>
-                  <div>Vehicle No</div>
-                  <TextField
-                    variant="outlined"
-                    id="vehicleNo"
-                    name="vehicleNo"
-                    value={formik.values.vehicleNo}
-                    style={{ marginTop: "1vh", minWidth: "15rem" }}
-                    onChange={formik.handleChange}
-                    disabled={disabled}
-                  ></TextField>
+              {showForm && (
+                <Grid container spacing={2} style={{ padding: "2vh" }}>
+                  <Grid item xs={4}>
+                    <div>Vehicle No</div>
+                    <div>
+                      <TextField
+                        variant="outlined"
+                        id="vehicleNo"
+                        name="vehicleNo"
+                        value={formik.values.vehicleNo}
+                        style={{ marginTop: "1vh", minWidth: "15rem" }}
+                        onChange={formik.handleChange}
+                        onBlur={() => handleFieldVisited("vehicleNo")}
+                      ></TextField>
+                      {formik.touched.vehicleNo && formik.errors.vehicleNo ? (
+                        <div style={{ color: "red" }}>
+                          {formik.errors.vehicleNo}
+                        </div>
+                      ) : null}
+                    </div>
+                  </Grid>
+                  <Grid item xs={4}>
+                    <div>Time</div>
+                    <BasicTimePicker
+                      id="time"
+                      name="time"
+                      value={formik.values.time}
+                      handleTimeChange={handleTimeChange}
+                    ></BasicTimePicker>
+                  </Grid>
+                  <Grid item xs={3}>
+                    <div>In/Out</div>
+                    <div>
+                      <FormControl style={{ marginTop: "1vh" }}>
+                        <Select
+                          style={{ minWidth: "10rem" }}
+                          id="inOut"
+                          name="inOut"
+                          value={formik.values.inOut}
+                          onChange={formik.handleChange}
+                          onBlur={() => handleFieldVisited("inOut")}
+                        >
+                          <MenuItem value="in">In</MenuItem>
+                          <MenuItem value="out">Out</MenuItem>
+                        </Select>
+                        {formik.touched.inOut && formik.errors.inOut ? (
+                          <div style={{ color: "red" }}>
+                            {formik.errors.inOut}
+                          </div>
+                        ) : null}
+                      </FormControl>
+                    </div>
+                  </Grid>
+                  <Grid item xs={1}>
+                    <div>
+                      <Button
+                        type="submit"
+                        variant="contained"
+                        // onClick={handleSubmit}
+                        style={{ marginTop: "4vh", backgroundColor: "#973535" }}
+                      >
+                        Enter
+                      </Button>
+                    </div>
+                  </Grid>
                 </Grid>
-                <Grid item xs={4}>
-                  <div>Time</div>
-                  <BasicTimePicker
-                    id="time"
-                    name="time"
-                    value={formik.values.time}
-                    handleTimeChange={handleTimeChange}
-                    // onFocus={() => handleFieldVisited("time")}
-                    // onBlur={() => handleFieldVisited("time")}
-                    disabled={disabled}
-                  ></BasicTimePicker>
-                </Grid>
-                <Grid item xs={3}>
-                  <div>In/Out</div>
-                  <FormControl style={{ marginTop: "1vh" }}>
-                    <Select
-                      style={{ minWidth: "10rem" }}
-                      id="inOut"
-                      name="inOut"
-                      value={formik.values.inOut}
-                      onChange={formik.handleChange}
-                      disabled={disabled}
-                    >
-                      <MenuItem value="in">In</MenuItem>
-                      <MenuItem value="out">Out</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Grid>
-                <Grid item xs={1}>
-                  <div>
-                    <Button
-                      type="submit"
-                      variant="contained"
-                      // onClick={handleSubmit}
-                      style={{ marginTop: "4vh", backgroundColor: "#973535" }}
-                    >
-                      Enter
-                    </Button>
-                  </div>
-                </Grid>
-              </Grid>
+              )}
             </form>
+
             <Box
               sx={{
                 height: "40vh",
-                width: "100vh",
                 "& .actions": {
                   color: "text.secondary",
                 },
                 "& .textPrimary": {
                   color: "text.primary",
+                },
+                "& .custom-header": {
+                  backgroundColor: "white",
+                  color: "black", // Change this color as needed
                 },
               }}
             >
