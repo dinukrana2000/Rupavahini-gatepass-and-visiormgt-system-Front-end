@@ -55,8 +55,8 @@ function User_login() {
     e.preventDefault();
     const Error = {};
   
-    if (!formData.username.trim()) {
-      Error.username = "User name is required";
+    if (!formData.usernameOrEmail.trim()) {
+      Error.usernameOrEmail = "Username or email is required"; 
     }
     if (!formData.password.trim()) {
       Error.password = "Password is required";
@@ -76,7 +76,7 @@ function User_login() {
         if (response.data.error) {
           if (response.data.error === 'Please verify your email before logging in') {
             alert(response.data.error);
-            navigate('/useremailverify', { state: { email: formData.username } });
+            navigate('/useremailverify', { state: { email: formData.usernameOrEmail } });
           } else {
             alert(response.data.error);
           }
@@ -128,15 +128,15 @@ function User_login() {
         <form onSubmit={handleSubmit}>
             
               <TextField
-                id='username'
-                name='username'
-                label='User Name'
+                id='usernameOrEmail'
+                name='usernameOrEmail'
+                label='User Name or Email'
                 fullWidth
                 variant='standard'
-                value={formData.username}
+                value={formData.usernameOrEmail}
                 onChange={handleInputChange}
-                error={!!errors.username}
-                helperText={errors.username}
+                error={!!errors.usernameOrEmail}
+                helperText={errors.usernameOrEmail}
                 style={{marginBottom: '10%'}}
               />
             
