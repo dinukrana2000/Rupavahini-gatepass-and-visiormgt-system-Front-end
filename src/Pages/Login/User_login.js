@@ -24,7 +24,7 @@ function User_login() {
  
   const [open, setOpen] = useState(false);
   const [formData, setFormData] = useState({
-      username: '',
+      usernameOrEmail: '',
       password: ''
   });
 
@@ -45,7 +45,7 @@ function User_login() {
   const handleClose = () => {
       setOpen(false);
       setFormData({
-          username:'',
+          usernameOrEmail:'',
           password:''
       });
       setErrors({});
@@ -55,8 +55,8 @@ function User_login() {
     e.preventDefault();
     const Error = {};
   
-    if (!formData.usernameOrEmail.trim()) {
-      Error.usernameOrEmail = "Username or email is required"; 
+    if (!formData.usernameOrEmailOrEmail.trim()) {
+      Error.usernameOrEmailOrEmail = "usernameOrEmail or email is required"; 
     }
     if (!formData.password.trim()) {
       Error.password = "Password is required";
@@ -76,7 +76,7 @@ function User_login() {
         if (response.data.error) {
           if (response.data.error === 'Please verify your email before logging in') {
             alert(response.data.error);
-            navigate('/useremailverify', { state: { email: formData.usernameOrEmail } });
+            navigate('/useremailverify', { state: { email: formData.usernameOrEmailOrEmail } });
           } else {
             alert(response.data.error);
           }
@@ -128,15 +128,15 @@ function User_login() {
         <form onSubmit={handleSubmit}>
             
               <TextField
-                id='usernameOrEmail'
-                name='usernameOrEmail'
+                id='usernameOrEmailOrEmail'
+                name='usernameOrEmailOrEmail'
                 label='User Name or Email'
                 fullWidth
                 variant='standard'
-                value={formData.usernameOrEmail}
+                value={formData.usernameOrEmailOrEmail}
                 onChange={handleInputChange}
-                error={!!errors.usernameOrEmail}
-                helperText={errors.usernameOrEmail}
+                error={!!errors.usernameOrEmailOrEmail}
+                helperText={errors.usernameOrEmailOrEmail}
                 style={{marginBottom: '10%'}}
               />
             
