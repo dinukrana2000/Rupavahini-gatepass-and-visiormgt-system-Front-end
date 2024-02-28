@@ -23,7 +23,7 @@ function Staff_login() {
   }
   const [open, setOpen] = useState(false);
   const [formData, setFormData] = useState({
-      empID: '',
+    empIDorEmail: '',
       password: ''
   });
 
@@ -44,7 +44,7 @@ function Staff_login() {
   const handleClose = () => {
       setOpen(false);
       setFormData({
-          empID:'',
+        empIDorEmail:'',
           password:''
       });
       setErrors({});
@@ -54,8 +54,8 @@ function Staff_login() {
       e.preventDefault();
       const Error = {};
 
-      if (!formData.empID.trim()) {
-        Error.empID = "User name is required";
+      if (!formData.empIDorEmail.trim()) {
+        Error.empIDorEmail = "User name is required";
       }
       if (!formData.password.trim()) {
         Error.password = "Password is required";
@@ -74,7 +74,7 @@ function Staff_login() {
         if (response.data.error) {
           if (response.data.error === 'Please verify your email before logging in'){
           alert(response.data.error);
-          navigate('/staffemailverify', { state: { email: formData.empID } });
+          navigate('/staffemailverify', { state: { email: formData.empIDorEmail } });
         } else {
           alert(response.data.error);
         }
@@ -125,15 +125,15 @@ function Staff_login() {
         <form onSubmit={handleSubmit}>
             
               <TextField
-                id='empID'
-                name='empID'
-                label='Emp Id'
+                id='empIDorEmail'
+                name='empIDorEmail'
+                label='Emp Id or Email'
                 fullWidth
                 variant='standard'
-                value={formData.empID}
+                value={formData.empIDorEmail}
                 onChange={handleInputChange}
-                error={!!errors.empID}
-                helperText={errors.empID}
+                error={!!errors.empIDorEmail}
+                helperText={errors.empIDorEmail}
                 style={{marginBottom: '10%'}}
               />
             
