@@ -11,6 +11,9 @@ import {
   TextField,
   Button,
   Input,
+  FormControl,
+  InputLabel,
+  Select
 } from '@mui/material';
 import DrawerStaff from "./../../Components/Drawer/DrawerStaff";
 import SettingsIcon from '@mui/icons-material/Settings';
@@ -20,6 +23,8 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
 import PersonIcon from '@mui/icons-material/Person';
+
+
 
 
 function UserProfileAccEdit() {
@@ -280,18 +285,22 @@ function UserProfileAccEdit() {
                 />
               </Grid>
               <Grid item xs={8}>
-                <TextField
-                  label="Division"
-                  fullWidth
-                  variant="filled"
-                  value={editedUser.division}
-                  onChange={(e) => handleFieldChange('division', e.target.value)}
-                  disabled={!editing}
-                  InputLabelProps={{
-                    style: { color: '#973535' } 
-                  }}
-                />
-              </Grid>
+  <FormControl variant="filled" fullWidth disabled={!editing}>
+    <InputLabel style={{ color: '#973535' }}>Division</InputLabel>
+    <Select
+      value={editedUser.division}
+      onChange={(e) => handleFieldChange('division', e.target.value)}
+    >
+      <MenuItem value="division1">Division 1</MenuItem>
+      <MenuItem value="division2">Division 2</MenuItem>
+      <MenuItem value="division3">Division 3</MenuItem>
+      <MenuItem value="division4">Division 4</MenuItem>
+      <MenuItem value="division5">Division 5</MenuItem>
+      <MenuItem value="division6">Division 6</MenuItem>
+    </Select>
+  </FormControl>
+</Grid>
+
               <Grid item xs={8}>
                 <TextField
                   label="Email"
