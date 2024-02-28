@@ -60,24 +60,25 @@ function Staffsignup() {
 
   const hanclestafffsignupClick = () => {
     console.log('Form submitted!', formData);
-    axios.post(`http://localhost:4000/userstaffRegister`, formData)
+    axios.post(`http://localhost:4000/signupstaff`, formData)
       .then(response => {
         console.log('Response:', response.data);
         if (response.data.error) {
           alert(response.data.error);
         } else {
-          if (response.status === 200) {
+          if (response.status === 201) {
             alert('Staff registered successfully!');
             handleClose();
-            navigate('/stafflogin');
+            navigate('/staffemailverify',{ state: { email: formData.email } });
           } else {
-            alert('An error occurred. Please try again.');
+            alert(`An error occurred. Please try again1.:${response.data.message}`);
+          
           }
         }
       })
       .catch(error => {
         console.error('Error:', error);
-        alert('An error occurred. Please try again.');
+        alert(`An error occurred. Please try again.:${error.message}`);
       });
 };
 
