@@ -52,30 +52,34 @@ function User_login() {
   };
 
   const handleSubmit = async (e) => {
-      e.preventDefault();
-      const Error = {};
-
-      if (!formData.username.trim()) {
-        Error.username = "User name is required";
-      }
-      if (!formData.password.trim()) {
-        Error.password = "Password is required";
-      } else if (formData.password.length < 6) {
-        Error.password = "Password must be at least 6 characters"
-      }
-      if (Object.keys(Error).length > 0) {
-        setErrors(Error);
-      } else {
-        handleOpen();
-      }
-
-      
-      console.log('Form submitted!', formData);
+    e.preventDefault();
+    const Error = {};
+  
+    if (!formData.username.trim()) {
+      Error.username = "User name is required";
+    }
+    if (!formData.password.trim()) {
+      Error.password = "Password is required";
+    } else if (formData.password.length < 6) {
+      Error.password = "Password must be at least 6 characters"
+    }
+    if (Object.keys(Error).length > 0) {
+      setErrors(Error);
+    } else {
+      handleOpen();
+    }
+  
+    console.log('Form submitted!', formData);
     axios.post(`http://localhost:4000/LoginUser`, formData)
       .then(response => {
         console.log('Response:', response.data);
         if (response.data.error) {
-          alert(response.data.error);
+          if (response.data.error === 'Please verify your email before logging in') {
+            alert(response.data.error);
+            navigate('/useremailverify', { state: { email: formData.username } });
+          } else {
+            alert(response.data.error);
+          }
         } else {
           if (response.status === 201) {
             localStorage.setItem('myAppToken', response.data.data);
@@ -92,6 +96,7 @@ function User_login() {
         alert('An error occurred. Please try again 2.');
       });
   };
+  
 
   
 

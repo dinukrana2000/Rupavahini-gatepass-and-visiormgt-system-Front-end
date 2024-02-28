@@ -72,7 +72,12 @@ function Staff_login() {
       .then(response => {
         console.log('Response:', response.data);
         if (response.data.error) {
+          if (response.data.error === 'Please verify your email before logging in'){
           alert(response.data.error);
+          navigate('/staffemailverify', { state: { email: formData.empID } });
+        } else {
+          alert(response.data.error);
+        }
         } else {
           if (response.status === 201) {
             localStorage.setItem('myAppToken', response.data.data);

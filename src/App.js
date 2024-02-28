@@ -21,7 +21,8 @@ import Search from './Pages/Historysearch/staffpagehistory-searchday';
 import Activity from './Pages/staffpagehistory-activity-view/Activity';
 import Request from './Pages/Request/Request'; 
 import Staff_req from './Pages/Staffrequest/Staff_req';
- 
+import Useremailverify from './Pages/signup/Useremailverify';
+import Staffemailverify from './Pages/signup/Staffemailverify';
 import { BrowserRouter , Route, Routes } from 'react-router-dom';
 
 
@@ -58,9 +59,10 @@ function App() {
       <Route path="/staffacc" element={<StaffAcc />} />
       <Route path="/staffaccedit" element={<StaffAccEdit />} />
       <Route path="/staffaccpwd" element={<StaffAccPwd />} />
-  
+      <Route path="/useremailverify" element={<Useremailverify/>} />
       <Route path="/staffcomplain" element={<StaffComplain/>} />
       <Route path="/staffreq" element={<Staff_req/>} />
+      <Route path="/staffemailverify" element={<Staffemailverify/>} />
       </Routes>
   </BrowserRouter>
 
