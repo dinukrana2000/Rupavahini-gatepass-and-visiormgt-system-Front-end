@@ -17,9 +17,9 @@ const ButtonStyle = styled(Button) ({
       },
 });
 
-const MuiButton = ({label, onClick}) => {
+const MuiButton = ({label, type, onClick}) => {
   return (
-    <ButtonStyle variant="contained" onClick={onClick}>
+    <ButtonStyle variant="contained" type={type} onClick={onClick}>
         {label}
     </ButtonStyle>
   );
