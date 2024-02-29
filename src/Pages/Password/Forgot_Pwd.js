@@ -3,8 +3,9 @@ import { Grid, TextField } from '@mui/material';
 import { useNavigate } from "react-router-dom";
 import './Forgot_Pwd.css'
 import MuiButton from '../../Components/Button/MuiButton';
-
+import axios from 'axios';
 import im4 from '../../Assets/im4.jpg'
+
 
 function Forgot_Pwd() {
 
@@ -33,22 +34,38 @@ function Forgot_Pwd() {
       setErrors({});
   };
 
-  const handleSubmit = (e) => {
-      e.preventDefault();
-      const Error = {};
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const Error = {};
 
-      if (!formData.email.trim()) {
+    if (!formData.email.trim()) {
         Error.email = "E-mail is required";
-      } else if (!isValidate(formData.email)) {
+    } else if (!isValidate(formData.email)) {
         Error.email = "Invalid email format";
-      }
-      if (Object.keys(Error).length > 0) {
+    }
+    if (Object.keys(Error).length > 0) {
         setErrors(Error);
-      } else {
-        handleOpen();
-        navigate('/Change');
-      }
-  };
+    } else {
+        // Make a POST request to the /forget-password endpoint
+        try {
+            const response = await axios.post('http://localhost:4000/forget-password', { email: formData.email });
+
+            // Check if the request was successful
+            if (response.data.status === "Email has been sent") {
+                handleOpen();
+                alert('Email has been sent');
+                navigate('/userlogin');
+            } else {
+                // Handle error
+                console.error(response.data);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+};
+
+
 
   const handleInputChange = (e) => {
     const {name, value} = e.target;
@@ -89,7 +106,9 @@ function Forgot_Pwd() {
                 helperText={errors.email}
               />
               
-              <MuiButton label="Next" onClick={handleSubmit}/>
+              <MuiButton type="submit" label="Next" />
+
+
 
             </Grid>
             
