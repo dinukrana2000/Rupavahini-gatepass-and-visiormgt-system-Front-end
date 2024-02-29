@@ -47,7 +47,7 @@ function App() {
       <Route path="/userreq" element={<UserReq/>} />
       <Route path="/dailyactivity" element={<Dailyactivity/>} />
       <Route path="/forgot" element={<Forgot/>} />
-      <Route path="/change" element={<Change/>} />
+      <Route path="/change/:id/:token" element={<Change/>} />
       <Route path="/useracc" element={<UserAcc />} />
       <Route path="/useraccedit" element={<UserAccEdit />} />
       <Route path="/useraccpwd" element={<UserAccPwd />} />

@@ -1,9 +1,13 @@
 import {useState} from "react";
 import { IconButton, InputAdornment, Grid, TextField } from "@mui/material";
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-
+import { useParams } from 'react-router-dom';
 import im4 from '../../Assets/im4.jpg';
 import MuiButton from "../../Components/Button/MuiButton";
+import axios from 'axios';
+import { useNavigate } from "react-router-dom";
+
+
 
 function Change_Pwd(){
   const [showPassword1, setShowPassword1] = useState(false);
@@ -12,7 +16,8 @@ function Change_Pwd(){
   const handleClickShowPassword1 = () => setShowPassword1((show) => !show);
   const handleClickShowPassword2 = () => setShowPassword2((show) => !show);
 
-
+  const { id, token } = useParams(); // Get the id and token from the URL
+  const navigate = useNavigate();
   const handleClickDownPassword = (event) =>{
     event.preventDefault();
   };
@@ -38,7 +43,7 @@ function Change_Pwd(){
     setErrors({});
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const Errors = {};
 
@@ -54,7 +59,22 @@ function Change_Pwd(){
     if (Object.keys(Errors).length > 0) {
       setErrors(Errors);
     } else {
-      handleOpen();
+      // Make a POST request to the /reset-password/:id/:token endpoint
+      try {
+        const response = await axios.post(`http://localhost:4000/reset-password/${id}/${token}`, { password: formData.password, confirmpassword: formData.confirmpassword });
+
+        // Check if the request was successful
+        if (response.data.status === "Password Updated") {
+          handleOpen();
+          alert('Password Updated successfully!');
+          navigate('/userlogin');
+        } else {
+          // Handle error
+          console.error(response.data);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
     }
   };
 
