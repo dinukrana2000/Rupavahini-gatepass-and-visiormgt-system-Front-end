@@ -19,7 +19,7 @@ function Staff_login() {
 
   const hanclefogotClick= () => {
       
-      navigate('/forgot');
+      navigate('/staffforgot');
   }
   const [open, setOpen] = useState(false);
   const [formData, setFormData] = useState({

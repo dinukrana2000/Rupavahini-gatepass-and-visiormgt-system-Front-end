@@ -100,7 +100,7 @@ function UserProfileAccEdit() {
   };
 
   const handleFieldChange = (fieldName, value) => {
-    if (fieldName === 'empID' && !editing) {
+    if ((fieldName === 'empID'||fieldName==='email') && !editing) {
       return; // Do not update empID field if not in editing mode
     }
 
@@ -308,7 +308,7 @@ function UserProfileAccEdit() {
                   variant="filled"
                   value={editedUser.email}
                   onChange={(e) => handleFieldChange('email', e.target.value)}
-                  disabled={!editing}
+                  disabled={editing||changesSaved}
                   InputLabelProps={{
                     style: { color: '#973535' } 
                   }}
