@@ -22,6 +22,7 @@ import Activity from './Pages/staffpagehistory-activity-view/Activity';
 import Request from './Pages/Request/Request'; 
 import Staff_req from './Pages/Staffrequest/Staff_req';
 import Sec_Visit from './Pages/Sec_Visit/Visit_Rup';
+import Sec_Appointment from './Pages/Sec_Appointment/Appointment_Rup';
  
 import { BrowserRouter , Route, Routes } from 'react-router-dom';
 
@@ -74,6 +75,7 @@ function App() {
       <Route path="/staffcomplain" element={<StaffComplain/>} />
       <Route path="/staffreq" element={<Staff_req/>} />
       <Route path='/secvisit' element={<Sec_Visit/>} />
+      <Route path='/secapp' element={<Sec_Appointment/>} />
       </Routes>
   </BrowserRouter>
 
