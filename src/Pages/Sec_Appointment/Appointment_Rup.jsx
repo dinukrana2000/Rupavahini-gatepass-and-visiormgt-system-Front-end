@@ -158,7 +158,7 @@ function Visit_Rup() {
     <Drawer />
     <BackgroundImg>
       <Container>
-        <h2><u>Visit Rupavahini</u></h2>
+        <h2><u>Appointmnets</u></h2>
 
           <Grid width={"100%"} >
             {loading ? (
