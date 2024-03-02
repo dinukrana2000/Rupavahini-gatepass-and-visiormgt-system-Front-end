@@ -1,4 +1,4 @@
-import { Box, height } from "@mui/system";
+import { Box } from "@mui/system";
 import image from "../../Assets/vehicleimage/vehiclebg.jpg";
 import React, { useState, useEffect } from "react";
 import {
@@ -16,7 +16,7 @@ import { styled } from "@mui/system";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import BasicDatePicker from "../../Components/datepicker/datepicker";
-import axios, { Axios } from "axios";
+import axios from "axios";
 import BasicTimePicker from "../../Components/timepicker/timepicker";
 import SaveIcon from "@mui/icons-material/Save";
 import CancelIcon from "@mui/icons-material/Close";
@@ -111,7 +111,7 @@ const VehicleTracking = () => {
     }),
   });
 
-  console.log("form valuesaaaa", formik.touched);
+  console.log("form value", formik.touched);
 
   const [fetchedData, setFetchedData] = useState([]);
 
@@ -141,8 +141,6 @@ const VehicleTracking = () => {
 
   const [rows, setRows] = useState(initialRows);
   const [rowModesModel, setRowModesModel] = useState({});
-
-  const [formData, setFormData] = useState({});
 
   const handleRowEditStop = (params, event) => {
     if (params.reason === GridRowEditStopReasons.rowFocusOut) {
